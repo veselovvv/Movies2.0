@@ -32,8 +32,8 @@ class MoviesUiTest {
             )
         )
 
-        var ui = MoviesUi.Success(movies, BaseMovieDomainToUiMapper())
-        ui.map(communication)
+        var ui = MoviesUi.Success(movies = movies, movieMapper = BaseMovieDomainToUiMapper())
+        ui.map(mapper = communication)
 
         communication.checkList(
             listOf<MovieUi>(
@@ -54,8 +54,8 @@ class MoviesUiTest {
         communication.checkMapCalledCount(1)
         order.check(listOf(MAP))
 
-        ui = MoviesUi.Success(listOf(), BaseMovieDomainToUiMapper())
-        ui.map(communication)
+        ui = MoviesUi.Success(movies = listOf(), movieMapper = BaseMovieDomainToUiMapper())
+        ui.map(mapper = communication)
 
         communication.checkList(listOf<MovieUi>(MovieUi.NoResults))
         communication.checkMapCalledCount(2)
@@ -64,10 +64,10 @@ class MoviesUiTest {
 
     @Test
     fun test_fail() {
-        val ui = MoviesUi.Fail(GENERIC_ERROR_MESSAGE)
-        ui.map(communication)
+        val ui = MoviesUi.Fail(errorMessage = GENERIC_ERROR_MESSAGE)
+        ui.map(mapper = communication)
 
-        communication.checkList(listOf<MovieUi>(MovieUi.Fail(GENERIC_ERROR_MESSAGE)))
+        communication.checkList(listOf<MovieUi>(MovieUi.Fail(errorMessage = GENERIC_ERROR_MESSAGE)))
         communication.checkMapCalledCount(1)
         order.check(listOf(MAP))
     }

@@ -1,5 +1,6 @@
 package com.veselovvv.movies20.movies.presentation
 
+import com.veselovvv.movies20.core.FakeResourceProvider
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.presentation.FakeMovieCache.Base.Companion.SAVE_MOVIE_INFO
 import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MAP
@@ -26,9 +27,9 @@ class MoviesViewModelTest {
         fetchMoviesUseCase = FakeFetchMoviesUseCase.Base(order)
         searchMoviesUseCase = FakeSearchMoviesUseCase.Base(order)
         communication = FakeMoviesCommunication.Base(order)
-        moviesDomainToUiMapper = BaseMoviesDomainToUiMapper.Base(
-            FakeResourceProvider(),
-            BaseMovieDomainToUiMapper()
+        moviesDomainToUiMapper = BaseMoviesDomainToUiMapper(
+            resourceProvider = FakeResourceProvider(),
+            movieMapper = BaseMovieDomainToUiMapper()
         )
         movieCache = FakeMovieCache.Base(order)
         viewModel = MoviesViewModel(
@@ -183,7 +184,7 @@ class MoviesViewModelTest {
 
                 return if (success)
                     MoviesDomain.Success(
-                        listOf(
+                        movies = listOf(
                             MovieData(
                                 id = 0,
                                 posterPath = "somePath0",
@@ -196,9 +197,10 @@ class MoviesViewModelTest {
                                 releaseDate = "2002-01-01",
                                 title = "Star Wars: Episode II - Attack of the Clones"
                             )
-                        ), BaseMovieDataToDomainMapper()
+                        ),
+                        movieMapper = BaseMovieDataToDomainMapper()
                     )
-                else MoviesDomain.Fail(ErrorType.GENERIC_ERROR)
+                else MoviesDomain.Fail(error = ErrorType.GENERIC_ERROR)
             }
         }
     }
@@ -245,19 +247,23 @@ class MoviesViewModelTest {
 
                 return if (success) {
                     if (isListEmpty)
-                        MoviesDomain.Success(listOf(), BaseMovieDataToDomainMapper())
+                        MoviesDomain.Success(
+                            movies = listOf(),
+                            movieMapper = BaseMovieDataToDomainMapper()
+                        )
                     else
                         MoviesDomain.Success(
-                            listOf(
+                            movies = listOf(
                                 MovieData(
                                     id = 1,
                                     posterPath = "somePath1",
                                     releaseDate = "2002-01-01",
                                     title = "Star Wars: Episode II - Attack of the Clones"
                                 )
-                            ), BaseMovieDataToDomainMapper()
+                            ),
+                            movieMapper = BaseMovieDataToDomainMapper()
                         )
-                } else MoviesDomain.Fail(ErrorType.GENERIC_ERROR)
+                } else MoviesDomain.Fail(error = ErrorType.GENERIC_ERROR)
             }
         }
     }

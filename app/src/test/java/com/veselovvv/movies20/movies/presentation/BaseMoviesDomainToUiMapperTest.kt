@@ -6,7 +6,10 @@ import org.junit.Test
 
 class BaseMoviesDomainToUiMapperTest {
     private val movieMapper = BaseMovieDomainToUiMapper()
-    private val mapper = BaseMoviesDomainToUiMapper(FakeResourceProvider(), movieMapper)
+    private val mapper = BaseMoviesDomainToUiMapper(
+        resourceProvider = FakeResourceProvider(),
+        movieMapper = movieMapper
+    )
 
     @Test
     fun test_success() {
@@ -25,19 +28,19 @@ class BaseMoviesDomainToUiMapperTest {
             )
         )
 
-        val expected = MoviesUi.Success(movies, movieMapper)
-        val actual = mapper.map(movies)
+        val expected = MoviesUi.Success(movies = movies, movieMapper = movieMapper)
+        val actual = mapper.map(movies = movies)
         assertEquals(expected, actual)
     }
 
     @Test
     fun test_fail() {
-        var expected = MoviesUi.Fail(NO_CONNECTION_MESSAGE)
-        var actual = mapper.map(ErrorType.NO_CONNECTION)
+        var expected = MoviesUi.Fail(errorMessage = NO_CONNECTION_MESSAGE)
+        var actual = mapper.map(error = ErrorType.NO_CONNECTION)
         assertEquals(expected, actual)
 
-        expected = MoviesUi.Fail(SERVICE_UNAVAILABLE_MESSAGE)
-        actual = mapper.map(ErrorType.SERVICE_UNAVAILABLE)
+        expected = MoviesUi.Fail(errorMessage = SERVICE_UNAVAILABLE_MESSAGE)
+        actual = mapper.map(error = ErrorType.SERVICE_UNAVAILABLE)
         assertEquals(expected, actual)
     }
 
