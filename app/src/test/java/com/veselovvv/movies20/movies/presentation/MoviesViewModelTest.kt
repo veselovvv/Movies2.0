@@ -1,10 +1,11 @@
 package com.veselovvv.movies20.movies.presentation
 
-import com.veselovvv.movies20.core.FakeResourceProvider
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.presentation.FakeMovieCache.Base.Companion.SAVE_MOVIE_INFO
 import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MAP
 import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeFetchMoviesUseCase.Companion.FETCH_EXECUTE
+import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeMoviesDomainToUiMapper.Companion.MAP_MOVIES_FAIL
+import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeMoviesDomainToUiMapper.Companion.MAP_MOVIES_SUCCESS
 import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeSearchMoviesUseCase.Companion.SEARCH_EXECUTE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
@@ -17,7 +18,7 @@ class MoviesViewModelTest {
     private lateinit var fetchMoviesUseCase: FakeFetchMoviesUseCase
     private lateinit var searchMoviesUseCase: FakeSearchMoviesUseCase
     private lateinit var communication: FakeMoviesCommunication
-    private lateinit var moviesDomainToUiMapper: MoviesDomainToUiMapper
+    private lateinit var moviesDomainToUiMapper: FakeMoviesDomainToUiMapper
     private lateinit var movieCache: FakeMovieCache
     private lateinit var viewModel: MoviesViewModel
 
@@ -27,10 +28,7 @@ class MoviesViewModelTest {
         fetchMoviesUseCase = FakeFetchMoviesUseCase.Base(order)
         searchMoviesUseCase = FakeSearchMoviesUseCase.Base(order)
         communication = FakeMoviesCommunication.Base(order)
-        moviesDomainToUiMapper = BaseMoviesDomainToUiMapper(
-            resourceProvider = FakeResourceProvider(),
-            movieMapper = BaseMovieDomainToUiMapper()
-        )
+        moviesDomainToUiMapper = FakeMoviesDomainToUiMapper.Base(order)
         movieCache = FakeMovieCache.Base(order)
         viewModel = MoviesViewModel(
             fetchMoviesUseCase = fetchMoviesUseCase,
@@ -70,7 +68,9 @@ class MoviesViewModelTest {
         communication.checkMapCalledCount(2)
         fetchMoviesUseCase.checkCalledCount(1)
         searchMoviesUseCase.checkCalledCount(0)
-        order.check(listOf(MAP, FETCH_EXECUTE, MAP))
+        moviesDomainToUiMapper.checkSuccessMapCalledCount(1)
+        moviesDomainToUiMapper.checkFailMapCalledCount(0)
+        order.check(listOf(MAP, FETCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP))
     }
 
     @Test
@@ -87,7 +87,9 @@ class MoviesViewModelTest {
         communication.checkMapCalledCount(2)
         fetchMoviesUseCase.checkCalledCount(1)
         searchMoviesUseCase.checkCalledCount(0)
-        order.check(listOf(MAP, FETCH_EXECUTE, MAP))
+        moviesDomainToUiMapper.checkSuccessMapCalledCount(0)
+        moviesDomainToUiMapper.checkFailMapCalledCount(1)
+        order.check(listOf(MAP, FETCH_EXECUTE, MAP_MOVIES_FAIL, MAP))
     }
 
     @Test
@@ -111,7 +113,9 @@ class MoviesViewModelTest {
         communication.checkMapCalledCount(2)
         fetchMoviesUseCase.checkCalledCount(0)
         searchMoviesUseCase.checkCalledCount(1)
-        order.check(listOf(MAP, SEARCH_EXECUTE, MAP))
+        moviesDomainToUiMapper.checkSuccessMapCalledCount(1)
+        moviesDomainToUiMapper.checkFailMapCalledCount(0)
+        order.check(listOf(MAP, SEARCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP))
 
         searchMoviesUseCase.expectListIsEmpty()
 
@@ -121,7 +125,11 @@ class MoviesViewModelTest {
         communication.checkMapCalledCount(4)
         fetchMoviesUseCase.checkCalledCount(0)
         searchMoviesUseCase.checkCalledCount(2)
-        order.check(listOf(MAP, SEARCH_EXECUTE, MAP, MAP, SEARCH_EXECUTE, MAP))
+        moviesDomainToUiMapper.checkSuccessMapCalledCount(2)
+        moviesDomainToUiMapper.checkFailMapCalledCount(0)
+        order.check(listOf(
+            MAP, SEARCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP, MAP, SEARCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP
+        ))
     }
 
     @Test
@@ -138,7 +146,9 @@ class MoviesViewModelTest {
         communication.checkMapCalledCount(2)
         fetchMoviesUseCase.checkCalledCount(0)
         searchMoviesUseCase.checkCalledCount(1)
-        order.check(listOf(MAP, SEARCH_EXECUTE, MAP))
+        moviesDomainToUiMapper.checkSuccessMapCalledCount(0)
+        moviesDomainToUiMapper.checkFailMapCalledCount(1)
+        order.check(listOf(MAP, SEARCH_EXECUTE, MAP_MOVIES_FAIL, MAP))
     }
 
     @Test
@@ -150,6 +160,11 @@ class MoviesViewModelTest {
         )
 
         movieCache.checkSaveCalledCount(1)
+        communication.checkMapCalledCount(0)
+        fetchMoviesUseCase.checkCalledCount(0)
+        searchMoviesUseCase.checkCalledCount(0)
+        moviesDomainToUiMapper.checkSuccessMapCalledCount(0)
+        moviesDomainToUiMapper.checkFailMapCalledCount(0)
         order.check(listOf(SAVE_MOVIE_INFO))
     }
 
@@ -264,6 +279,54 @@ class MoviesViewModelTest {
                             movieMapper = BaseMovieDataToDomainMapper()
                         )
                 } else MoviesDomain.Fail(error = ErrorType.GENERIC_ERROR)
+            }
+        }
+    }
+
+    interface FakeMoviesDomainToUiMapper : MoviesDomainToUiMapper {
+        companion object {
+            const val MAP_MOVIES_SUCCESS = "FakeMoviesDomainToUiMapper#mapsuccess"
+            const val MAP_MOVIES_FAIL = "FakeMoviesDomainToUiMapper#mapfail"
+        }
+
+        fun checkSuccessMapCalledCount(count: Int)
+        fun checkFailMapCalledCount(count: Int)
+
+        class Base(private val order: Order) : FakeMoviesDomainToUiMapper {
+            private var successMapCalledCount = 0
+            private var failMapCalledCount = 0
+
+            override fun checkSuccessMapCalledCount(count: Int) {
+                assertEquals(count, successMapCalledCount)
+            }
+
+            override fun checkFailMapCalledCount(count: Int) {
+                assertEquals(count, failMapCalledCount)
+            }
+
+            override fun map(movies: List<MovieDomain>): MoviesUi {
+                successMapCalledCount++
+                order.add(MAP_MOVIES_SUCCESS)
+                return MoviesUi.Success(movies, BaseMovieDomainToUiMapper())
+            }
+
+            override fun map(error: ErrorType): MoviesUi {
+                failMapCalledCount++
+                order.add(MAP_MOVIES_FAIL)
+
+                return MoviesUi.Fail(
+                    when (error) {
+                        ErrorType.NO_CONNECTION -> NO_CONNECTION_MESSAGE
+                        ErrorType.SERVICE_UNAVAILABLE -> SERVICE_UNAVAILABLE_MESSAGE
+                        else -> SOMETHING_WENT_WRONG
+                    }
+                )
+            }
+
+            companion object {
+                private const val NO_CONNECTION_MESSAGE = "No connection. Please try again!"
+                private const val SERVICE_UNAVAILABLE_MESSAGE = "Service unavailable. Please try again!"
+                private const val SOMETHING_WENT_WRONG = "Something went wrong. Please try again!"
             }
         }
     }

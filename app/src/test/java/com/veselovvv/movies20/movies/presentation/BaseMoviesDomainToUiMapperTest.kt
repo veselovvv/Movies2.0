@@ -1,15 +1,25 @@
 package com.veselovvv.movies20.movies.presentation
 
 import com.veselovvv.movies20.core.FakeResourceProvider
+import com.veselovvv.movies20.core.Order
 import org.junit.Assert.assertEquals
+import org.junit.Before
 import org.junit.Test
 
 class BaseMoviesDomainToUiMapperTest {
-    private val movieMapper = BaseMovieDomainToUiMapper()
-    private val mapper = BaseMoviesDomainToUiMapper(
-        resourceProvider = FakeResourceProvider(),
-        movieMapper = movieMapper
-    )
+    private lateinit var order: Order
+    private lateinit var movieMapper: FakeMovieDomainToUiMapper
+    private lateinit var mapper: MoviesDomainToUiMapper
+
+    @Before
+    fun setup() {
+        order = Order()
+        movieMapper = FakeMovieDomainToUiMapper.Base(order)
+        mapper = BaseMoviesDomainToUiMapper(
+            resourceProvider = FakeResourceProvider(),
+            movieMapper = movieMapper
+        )
+    }
 
     @Test
     fun test_success() {
@@ -31,6 +41,8 @@ class BaseMoviesDomainToUiMapperTest {
         val expected = MoviesUi.Success(movies = movies, movieMapper = movieMapper)
         val actual = mapper.map(movies = movies)
         assertEquals(expected, actual)
+        movieMapper.checkMapCalledCount(0)
+        order.check(listOf())
     }
 
     @Test
@@ -38,10 +50,14 @@ class BaseMoviesDomainToUiMapperTest {
         var expected = MoviesUi.Fail(errorMessage = NO_CONNECTION_MESSAGE)
         var actual = mapper.map(error = ErrorType.NO_CONNECTION)
         assertEquals(expected, actual)
+        movieMapper.checkMapCalledCount(0)
+        order.check(listOf())
 
         expected = MoviesUi.Fail(errorMessage = SERVICE_UNAVAILABLE_MESSAGE)
         actual = mapper.map(error = ErrorType.SERVICE_UNAVAILABLE)
         assertEquals(expected, actual)
+        movieMapper.checkMapCalledCount(0)
+        order.check(listOf())
     }
 
     companion object {

@@ -1,17 +1,20 @@
 package com.veselovvv.movies20.movies.presentation
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movies.presentation.FakeMovieDomainToUiMapper.Companion.MOVIE_MAP
 import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MAP
 import org.junit.Before
 import org.junit.Test
 
 class MoviesUiTest {
     private lateinit var order: Order
+    private lateinit var movieMapper: FakeMovieDomainToUiMapper
     private lateinit var communication: FakeMoviesCommunication
 
     @Before
     fun setup() {
         order = Order()
+        movieMapper = FakeMovieDomainToUiMapper.Base(order)
         communication = FakeMoviesCommunication.Base(order)
     }
 
@@ -32,7 +35,7 @@ class MoviesUiTest {
             )
         )
 
-        var ui = MoviesUi.Success(movies = movies, movieMapper = BaseMovieDomainToUiMapper())
+        var ui = MoviesUi.Success(movies = movies, movieMapper = movieMapper)
         ui.map(mapper = communication)
 
         communication.checkList(
@@ -52,14 +55,16 @@ class MoviesUiTest {
             )
         )
         communication.checkMapCalledCount(1)
-        order.check(listOf(MAP))
+        movieMapper.checkMapCalledCount(1)
+        order.check(listOf(MOVIE_MAP, MAP))
 
-        ui = MoviesUi.Success(movies = listOf(), movieMapper = BaseMovieDomainToUiMapper())
+        ui = MoviesUi.Success(movies = listOf(), movieMapper = movieMapper)
         ui.map(mapper = communication)
 
         communication.checkList(listOf<MovieUi>(MovieUi.NoResults))
         communication.checkMapCalledCount(2)
-        order.check(listOf(MAP, MAP))
+        movieMapper.checkMapCalledCount(1)
+        order.check(listOf(MOVIE_MAP, MAP, MAP))
     }
 
     @Test
@@ -69,6 +74,7 @@ class MoviesUiTest {
 
         communication.checkList(listOf<MovieUi>(MovieUi.Fail(errorMessage = GENERIC_ERROR_MESSAGE)))
         communication.checkMapCalledCount(1)
+        movieMapper.checkMapCalledCount(0)
         order.check(listOf(MAP))
     }
 
