@@ -5,7 +5,7 @@ import org.junit.Assert.assertEquals
 
 interface FakeMovieDomainToUiMapper : MovieDomainToUiMapper {
     companion object {
-        const val MOVIE_MAP = "FakeMovieDomainToUiMapper#map"
+        const val MOVIE_MAP_UI = "FakeMovieDomainToUiMapper#map"
     }
 
     fun checkMapCalledCount(count: Int)
@@ -19,7 +19,7 @@ interface FakeMovieDomainToUiMapper : MovieDomainToUiMapper {
 
         override fun map(id: Int, posterPath: String, releaseDate: String, title: String): MovieUi {
             mapCalledCount++
-            order.add(MOVIE_MAP)
+            order.add(MOVIE_MAP_UI)
             return MovieUi.Base(id, posterPath, releaseDate, title)
         }
     }
