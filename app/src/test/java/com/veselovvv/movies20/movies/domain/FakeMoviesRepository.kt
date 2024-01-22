@@ -5,8 +5,8 @@ import org.junit.Assert.assertEquals
 
 interface FakeMoviesRepository : MoviesRepository {
     companion object {
-        const val REPOSITORY_FETCH = "FakeMoviesRepository#fetchMovies"
-        const val REPOSITORY_SEARCH = "FakeMoviesRepository#searchMovies"
+        const val REPOSITORY_FETCH_MOVIES = "FakeMoviesRepository#fetchMovies"
+        const val REPOSITORY_SEARCH_MOVIES = "FakeMoviesRepository#searchMovies"
     }
 
     fun expectSuccess()
@@ -37,7 +37,7 @@ interface FakeMoviesRepository : MoviesRepository {
 
         override suspend fun fetchMovies(): MoviesData {
             fetchMoviesCalledCount++
-            order.add(REPOSITORY_FETCH)
+            order.add(REPOSITORY_FETCH_MOVIES)
 
             return if (exception == null) MoviesData.Success(
                 listOf(
@@ -60,7 +60,7 @@ interface FakeMoviesRepository : MoviesRepository {
 
         override suspend fun searchMovies(query: String): MoviesData {
             searchMoviesCalledCount++
-            order.add(REPOSITORY_SEARCH)
+            order.add(REPOSITORY_SEARCH_MOVIES)
 
             return if (exception == null) MoviesData.Success(
                 listOf(

@@ -2,7 +2,7 @@ package com.veselovvv.movies20.movies.presentation
 
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.presentation.FakeMovieDomainToUiMapper.Companion.MOVIE_MAP_UI
-import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MAP
+import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MOVIES_COMMUNICATION_MAP
 import org.junit.Before
 import org.junit.Test
 
@@ -56,7 +56,7 @@ class MoviesUiTest {
         )
         communication.checkMapCalledCount(1)
         movieMapper.checkMapCalledCount(1)
-        order.check(listOf(MOVIE_MAP_UI, MAP))
+        order.check(listOf(MOVIE_MAP_UI, MOVIES_COMMUNICATION_MAP))
 
         ui = MoviesUi.Success(movies = listOf(), movieMapper = movieMapper)
         ui.map(mapper = communication)
@@ -64,7 +64,7 @@ class MoviesUiTest {
         communication.checkList(listOf<MovieUi>(MovieUi.NoResults))
         communication.checkMapCalledCount(2)
         movieMapper.checkMapCalledCount(1)
-        order.check(listOf(MOVIE_MAP_UI, MAP, MAP))
+        order.check(listOf(MOVIE_MAP_UI, MOVIES_COMMUNICATION_MAP, MOVIES_COMMUNICATION_MAP))
     }
 
     @Test
@@ -75,7 +75,7 @@ class MoviesUiTest {
         communication.checkList(listOf<MovieUi>(MovieUi.Fail(errorMessage = GENERIC_ERROR_MESSAGE)))
         communication.checkMapCalledCount(1)
         movieMapper.checkMapCalledCount(0)
-        order.check(listOf(MAP))
+        order.check(listOf(MOVIES_COMMUNICATION_MAP))
     }
 
     companion object {

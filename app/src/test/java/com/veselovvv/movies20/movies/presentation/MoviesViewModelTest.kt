@@ -2,9 +2,11 @@ package com.veselovvv.movies20.movies.presentation
 
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.presentation.FakeMovieCache.Base.Companion.SAVE_MOVIE_INFO
-import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MAP
-import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeFetchMoviesUseCase.Companion.FETCH_EXECUTE
-import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeSearchMoviesUseCase.Companion.SEARCH_EXECUTE
+import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MOVIES_COMMUNICATION_MAP
+import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_FAIL
+import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_SUCCESS
+import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeFetchMoviesUseCase.Companion.FETCH_MOVIES_EXECUTE
+import com.veselovvv.movies20.movies.presentation.MoviesViewModelTest.FakeSearchMoviesUseCase.Companion.SEARCH_MOVIES_EXECUTE
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
@@ -68,7 +70,14 @@ class MoviesViewModelTest {
         searchMoviesUseCase.checkCalledCount(0)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(1)
         moviesDomainToUiMapper.checkFailMapCalledCount(0)
-        order.check(listOf(MAP, FETCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP))
+        order.check(
+            listOf(
+                MOVIES_COMMUNICATION_MAP,
+                FETCH_MOVIES_EXECUTE,
+                MOVIES_MAP_UI_SUCCESS,
+                MOVIES_COMMUNICATION_MAP
+            )
+        )
     }
 
     @Test
@@ -87,7 +96,14 @@ class MoviesViewModelTest {
         searchMoviesUseCase.checkCalledCount(0)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(0)
         moviesDomainToUiMapper.checkFailMapCalledCount(1)
-        order.check(listOf(MAP, FETCH_EXECUTE, MAP_MOVIES_FAIL, MAP))
+        order.check(
+            listOf(
+                MOVIES_COMMUNICATION_MAP,
+                FETCH_MOVIES_EXECUTE,
+                MOVIES_MAP_UI_FAIL,
+                MOVIES_COMMUNICATION_MAP
+            )
+        )
     }
 
     @Test
@@ -113,7 +129,14 @@ class MoviesViewModelTest {
         searchMoviesUseCase.checkCalledCount(1)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(1)
         moviesDomainToUiMapper.checkFailMapCalledCount(0)
-        order.check(listOf(MAP, SEARCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP))
+        order.check(
+            listOf(
+                MOVIES_COMMUNICATION_MAP,
+                SEARCH_MOVIES_EXECUTE,
+                MOVIES_MAP_UI_SUCCESS,
+                MOVIES_COMMUNICATION_MAP
+            )
+        )
 
         searchMoviesUseCase.expectListIsEmpty()
 
@@ -125,9 +148,18 @@ class MoviesViewModelTest {
         searchMoviesUseCase.checkCalledCount(2)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(2)
         moviesDomainToUiMapper.checkFailMapCalledCount(0)
-        order.check(listOf(
-            MAP, SEARCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP, MAP, SEARCH_EXECUTE, MAP_MOVIES_SUCCESS, MAP
-        ))
+        order.check(
+            listOf(
+                MOVIES_COMMUNICATION_MAP,
+                SEARCH_MOVIES_EXECUTE,
+                MOVIES_MAP_UI_SUCCESS,
+                MOVIES_COMMUNICATION_MAP,
+                MOVIES_COMMUNICATION_MAP,
+                SEARCH_MOVIES_EXECUTE,
+                MOVIES_MAP_UI_SUCCESS,
+                MOVIES_COMMUNICATION_MAP
+            )
+        )
     }
 
     @Test
@@ -146,7 +178,14 @@ class MoviesViewModelTest {
         searchMoviesUseCase.checkCalledCount(1)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(0)
         moviesDomainToUiMapper.checkFailMapCalledCount(1)
-        order.check(listOf(MAP, SEARCH_EXECUTE, MAP_MOVIES_FAIL, MAP))
+        order.check(
+            listOf(
+                MOVIES_COMMUNICATION_MAP,
+                SEARCH_MOVIES_EXECUTE,
+                MOVIES_MAP_UI_FAIL,
+                MOVIES_COMMUNICATION_MAP
+            )
+        )
     }
 
     @Test
@@ -168,7 +207,7 @@ class MoviesViewModelTest {
 
     interface FakeFetchMoviesUseCase : FetchMoviesUseCase {
         companion object {
-            const val FETCH_EXECUTE = "FakeFetchMoviesUseCase#execute"
+            const val FETCH_MOVIES_EXECUTE = "FakeFetchMoviesUseCase#execute"
         }
 
         fun expectSuccess()
@@ -193,7 +232,7 @@ class MoviesViewModelTest {
 
             override suspend fun execute(): MoviesDomain {
                 calledCount++
-                order.add(FETCH_EXECUTE)
+                order.add(FETCH_MOVIES_EXECUTE)
 
                 return if (success)
                     MoviesDomain.Success(
@@ -220,7 +259,7 @@ class MoviesViewModelTest {
 
     interface FakeSearchMoviesUseCase : SearchMoviesUseCase {
         companion object {
-            const val SEARCH_EXECUTE = "FakeSearchMoviesUseCase#execute"
+            const val SEARCH_MOVIES_EXECUTE = "FakeSearchMoviesUseCase#execute"
         }
 
         fun expectSuccess()
@@ -256,7 +295,7 @@ class MoviesViewModelTest {
 
             override suspend fun execute(query: String): MoviesDomain {
                 calledCount++
-                order.add(SEARCH_EXECUTE)
+                order.add(SEARCH_MOVIES_EXECUTE)
 
                 return if (success) {
                     if (isListEmpty)

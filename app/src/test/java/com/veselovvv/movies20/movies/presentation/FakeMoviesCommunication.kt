@@ -7,7 +7,7 @@ import org.junit.Assert.assertEquals
 
 interface FakeMoviesCommunication : MoviesCommunication {
     companion object {
-        const val MAP = "FakeMoviesCommunication#map"
+        const val MOVIES_COMMUNICATION_MAP = "FakeMoviesCommunication#map"
     }
 
     fun checkList(list: List<MovieUi>)
@@ -28,7 +28,7 @@ interface FakeMoviesCommunication : MoviesCommunication {
         override fun map(movies: List<MovieUi>) {
             this.movies = movies
             mapCalledCount++
-            order.add(MAP)
+            order.add(MOVIES_COMMUNICATION_MAP)
         }
 
         override fun observe(owner: LifecycleOwner, observer: Observer<List<MovieUi>>) = Unit

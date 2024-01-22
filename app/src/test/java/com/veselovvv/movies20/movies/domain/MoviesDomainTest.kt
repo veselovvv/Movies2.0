@@ -3,8 +3,8 @@ package com.veselovvv.movies20.movies.domain
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.presentation.FakeMovieDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper
-import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MAP_MOVIES_FAIL
-import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MAP_MOVIES_SUCCESS
+import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_FAIL
+import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_SUCCESS
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -69,7 +69,7 @@ class MoviesDomainTest {
         movieDataToDomainMapper.checkMapCalledCount(0)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(1)
         moviesDomainToUiMapper.checkFailMapCalledCount(0)
-        order.check(listOf(MAP_MOVIES_SUCCESS))
+        order.check(listOf(MOVIES_MAP_UI_SUCCESS))
     }
 
     @Test
@@ -82,7 +82,7 @@ class MoviesDomainTest {
         movieDataToDomainMapper.checkMapCalledCount(0)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(0)
         moviesDomainToUiMapper.checkFailMapCalledCount(1)
-        order.check(listOf(MAP_MOVIES_FAIL))
+        order.check(listOf(MOVIES_MAP_UI_FAIL))
 
         domain = MoviesDomain.Fail(error = ErrorType.SERVICE_UNAVAILABLE)
         var expected = MoviesUi.Fail(errorMessage = SERVICE_UNAVAILABLE_MESSAGE)
@@ -92,7 +92,7 @@ class MoviesDomainTest {
         movieDataToDomainMapper.checkMapCalledCount(0)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(0)
         moviesDomainToUiMapper.checkFailMapCalledCount(2)
-        order.check(listOf(MAP_MOVIES_FAIL, MAP_MOVIES_FAIL))
+        order.check(listOf(MOVIES_MAP_UI_FAIL, MOVIES_MAP_UI_FAIL))
     }
 
     companion object {

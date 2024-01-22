@@ -3,7 +3,7 @@ package com.veselovvv.movies20.movies.domain
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.domain.FakeMoviesDataToDomainMapper.Companion.MOVIES_MAP_DOMAIN_FAIL
 import com.veselovvv.movies20.movies.domain.FakeMoviesDataToDomainMapper.Companion.MOVIES_MAP_DOMAIN_SUCCESS
-import com.veselovvv.movies20.movies.domain.FakeMoviesRepository.Companion.REPOSITORY_SEARCH
+import com.veselovvv.movies20.movies.domain.FakeMoviesRepository.Companion.REPOSITORY_SEARCH_MOVIES
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -47,7 +47,7 @@ class SearchMoviesUseCaseTest {
         movieMapper.checkMapCalledCount(0)
         moviesMapper.checkMapSuccessCalledCount(1)
         moviesMapper.checkMapFailCalledCount(0)
-        order.check(listOf(REPOSITORY_SEARCH, MOVIES_MAP_DOMAIN_SUCCESS))
+        order.check(listOf(REPOSITORY_SEARCH_MOVIES, MOVIES_MAP_DOMAIN_SUCCESS))
     }
 
     @Test
@@ -62,7 +62,7 @@ class SearchMoviesUseCaseTest {
         movieMapper.checkMapCalledCount(0)
         moviesMapper.checkMapSuccessCalledCount(0)
         moviesMapper.checkMapFailCalledCount(1)
-        order.check(listOf(REPOSITORY_SEARCH, MOVIES_MAP_DOMAIN_FAIL))
+        order.check(listOf(REPOSITORY_SEARCH_MOVIES, MOVIES_MAP_DOMAIN_FAIL))
 
         repository.expectFail(Exception())
 
@@ -75,7 +75,7 @@ class SearchMoviesUseCaseTest {
         moviesMapper.checkMapSuccessCalledCount(0)
         moviesMapper.checkMapFailCalledCount(2)
         order.check(listOf(
-            REPOSITORY_SEARCH, MOVIES_MAP_DOMAIN_FAIL, REPOSITORY_SEARCH, MOVIES_MAP_DOMAIN_FAIL
+            REPOSITORY_SEARCH_MOVIES, MOVIES_MAP_DOMAIN_FAIL, REPOSITORY_SEARCH_MOVIES, MOVIES_MAP_DOMAIN_FAIL
         ))
     }
 }

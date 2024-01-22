@@ -5,8 +5,8 @@ import org.junit.Assert.assertEquals
 
 interface FakeMoviesDomainToUiMapper : MoviesDomainToUiMapper {
     companion object {
-        const val MAP_MOVIES_SUCCESS = "FakeMoviesDomainToUiMapper#mapsuccess"
-        const val MAP_MOVIES_FAIL = "FakeMoviesDomainToUiMapper#mapfail"
+        const val MOVIES_MAP_UI_SUCCESS = "FakeMoviesDomainToUiMapper#mapsuccess"
+        const val MOVIES_MAP_UI_FAIL = "FakeMoviesDomainToUiMapper#mapfail"
     }
 
     fun checkSuccessMapCalledCount(count: Int)
@@ -26,13 +26,13 @@ interface FakeMoviesDomainToUiMapper : MoviesDomainToUiMapper {
 
         override fun map(movies: List<MovieDomain>): MoviesUi {
             successMapCalledCount++
-            order.add(MAP_MOVIES_SUCCESS)
+            order.add(MOVIES_MAP_UI_SUCCESS)
             return MoviesUi.Success(movies, BaseMovieDomainToUiMapper())
         }
 
         override fun map(error: ErrorType): MoviesUi {
             failMapCalledCount++
-            order.add(MAP_MOVIES_FAIL)
+            order.add(MOVIES_MAP_UI_FAIL)
 
             return MoviesUi.Fail(
                 when (error) {
