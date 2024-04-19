@@ -28,7 +28,7 @@ class MoviesViewModelTest {
         fetchMoviesUseCase = FakeFetchMoviesUseCase.Base(order)
         searchMoviesUseCase = FakeSearchMoviesUseCase.Base(order)
         communication = FakeMoviesCommunication.Base(order)
-        moviesDomainToUiMapper = FakeMoviesDomainToUiMapper.Base(order)
+        moviesDomainToUiMapper = FakeMoviesDomainToUiMapper.Base(order, BaseMovieDomainToUiMapper())
         movieCache = FakeMovieCache.Base(order)
         viewModel = MoviesViewModel(
             fetchMoviesUseCase = fetchMoviesUseCase,

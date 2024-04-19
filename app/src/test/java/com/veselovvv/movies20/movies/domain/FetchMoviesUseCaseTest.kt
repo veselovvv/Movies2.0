@@ -22,7 +22,7 @@ class FetchMoviesUseCaseTest {
         order = Order()
         repository = FakeMoviesRepository.Base(order)
         movieMapper = FakeMovieDataToDomainMapper.Base(order)
-        moviesMapper = FakeMoviesDataToDomainMapper.Base(order)
+        moviesMapper = FakeMoviesDataToDomainMapper.Base(order, movieMapper)
         useCase = FetchMoviesUseCase.Base(repository = repository, mapper = moviesMapper)
     }
 
@@ -81,7 +81,10 @@ class FetchMoviesUseCaseTest {
         moviesMapper.checkMapSuccessCalledCount(0)
         moviesMapper.checkMapFailCalledCount(2)
         order.check(listOf(
-            REPOSITORY_FETCH_MOVIES, MOVIES_MAP_DOMAIN_FAIL, REPOSITORY_FETCH_MOVIES, MOVIES_MAP_DOMAIN_FAIL
+            REPOSITORY_FETCH_MOVIES,
+            MOVIES_MAP_DOMAIN_FAIL,
+            REPOSITORY_FETCH_MOVIES,
+            MOVIES_MAP_DOMAIN_FAIL
         ))
     }
 }

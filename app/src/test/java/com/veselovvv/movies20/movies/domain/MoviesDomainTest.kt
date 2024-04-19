@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movies.domain
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movies.domain.FakeMovieDataToDomainMapper.Companion.MOVIE_MAP_DOMAIN
 import com.veselovvv.movies20.movies.presentation.FakeMovieDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_FAIL
@@ -20,7 +21,7 @@ class MoviesDomainTest {
         order = Order()
         movieDomainToUiMapper = FakeMovieDomainToUiMapper.Base(order)
         movieDataToDomainMapper = FakeMovieDataToDomainMapper.Base(order)
-        moviesDomainToUiMapper = FakeMoviesDomainToUiMapper.Base(order)
+        moviesDomainToUiMapper = FakeMoviesDomainToUiMapper.Base(order, movieDomainToUiMapper)
     }
 
     @Test
@@ -66,10 +67,10 @@ class MoviesDomainTest {
         val actual = domain.map(mapper = moviesDomainToUiMapper)
         assertEquals(expected, actual)
         movieDomainToUiMapper.checkMapCalledCount(0)
-        movieDataToDomainMapper.checkMapCalledCount(0)
+        movieDataToDomainMapper.checkMapCalledCount(2)
         moviesDomainToUiMapper.checkSuccessMapCalledCount(1)
         moviesDomainToUiMapper.checkFailMapCalledCount(0)
-        order.check(listOf(MOVIES_MAP_UI_SUCCESS))
+        order.check(listOf(MOVIE_MAP_DOMAIN, MOVIE_MAP_DOMAIN, MOVIES_MAP_UI_SUCCESS))
     }
 
     @Test

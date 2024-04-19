@@ -55,16 +55,21 @@ class MoviesUiTest {
             )
         )
         communication.checkMapCalledCount(1)
-        movieMapper.checkMapCalledCount(1)
-        order.check(listOf(MOVIE_MAP_UI, MOVIES_COMMUNICATION_MAP))
+        movieMapper.checkMapCalledCount(2)
+        order.check(listOf(MOVIE_MAP_UI, MOVIE_MAP_UI, MOVIES_COMMUNICATION_MAP))
 
         ui = MoviesUi.Success(movies = listOf(), movieMapper = movieMapper)
         ui.map(mapper = communication)
 
         communication.checkList(listOf<MovieUi>(MovieUi.NoResults))
         communication.checkMapCalledCount(2)
-        movieMapper.checkMapCalledCount(1)
-        order.check(listOf(MOVIE_MAP_UI, MOVIES_COMMUNICATION_MAP, MOVIES_COMMUNICATION_MAP))
+        movieMapper.checkMapCalledCount(2)
+        order.check(listOf(
+            MOVIE_MAP_UI,
+            MOVIE_MAP_UI,
+            MOVIES_COMMUNICATION_MAP,
+            MOVIES_COMMUNICATION_MAP
+        ))
     }
 
     @Test

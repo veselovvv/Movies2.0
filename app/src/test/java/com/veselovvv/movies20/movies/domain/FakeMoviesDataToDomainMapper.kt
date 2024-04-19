@@ -14,7 +14,10 @@ interface FakeMoviesDataToDomainMapper : MoviesDataToDomainMapper {
     fun checkMapSuccessCalledCount(count: Int)
     fun checkMapFailCalledCount(count: Int)
 
-    class Base(private val order: Order) : FakeMoviesDataToDomainMapper {
+    class Base(
+        private val order: Order,
+        private val movieMapper: MovieDataToDomainMapper
+    ) : FakeMoviesDataToDomainMapper {
         private var mapSuccessCalledCount = 0
         private var mapFailCalledCount = 0
 
@@ -29,8 +32,7 @@ interface FakeMoviesDataToDomainMapper : MoviesDataToDomainMapper {
         override fun map(movies: List<MovieData>): MoviesDomain {
             mapSuccessCalledCount++
             order.add(MOVIES_MAP_DOMAIN_SUCCESS)
-
-            return MoviesDomain.Success(movies, BaseMovieDataToDomainMapper())
+            return MoviesDomain.Success(movies, movieMapper)
         }
 
         override fun map(exception: Exception): MoviesDomain {

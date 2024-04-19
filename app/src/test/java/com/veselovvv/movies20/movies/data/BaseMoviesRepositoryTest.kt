@@ -4,6 +4,7 @@ import com.veselovvv.movies20.core.FakeException
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.data.BaseMoviesRepositoryTest.FakeMoviesCloudDataSource.Companion.FETCH_MOVIES
 import com.veselovvv.movies20.movies.data.BaseMoviesRepositoryTest.FakeMoviesCloudMapper.Companion.MOVIES_CLOUD_MAP
+import com.veselovvv.movies20.movies.data.FakeToMovieMapper.Companion.TO_MOVIE_MAP
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
@@ -51,7 +52,7 @@ class BaseMoviesRepositoryTest {
         assertEquals(expected, actual)
         cloudDataSource.checkCalledCount(1)
         cloudMapper.checkMapCalledCount(1)
-        order.check(listOf(FETCH_MOVIES, MOVIES_CLOUD_MAP))
+        order.check(listOf(FETCH_MOVIES, MOVIES_CLOUD_MAP, TO_MOVIE_MAP, TO_MOVIE_MAP))
     }
 
     @Test
@@ -85,14 +86,20 @@ class BaseMoviesRepositoryTest {
         assertEquals(expected, actual)
         cloudDataSource.checkCalledCount(1)
         cloudMapper.checkMapCalledCount(1)
-        order.check(listOf(FETCH_MOVIES, MOVIES_CLOUD_MAP))
+        order.check(listOf(FETCH_MOVIES, MOVIES_CLOUD_MAP, TO_MOVIE_MAP))
 
         expected = MoviesData.Success(movies = listOf())
         actual = repository.searchMovies(query = "Element that does not exist")
         assertEquals(expected, actual)
         cloudDataSource.checkCalledCount(2)
         cloudMapper.checkMapCalledCount(2)
-        order.check(listOf(FETCH_MOVIES, MOVIES_CLOUD_MAP, FETCH_MOVIES, MOVIES_CLOUD_MAP))
+        order.check(listOf(
+            FETCH_MOVIES,
+            MOVIES_CLOUD_MAP,
+            TO_MOVIE_MAP,
+            FETCH_MOVIES,
+            MOVIES_CLOUD_MAP
+        ))
     }
 
     @Test
@@ -172,20 +179,9 @@ class BaseMoviesRepositoryTest {
                 mapCalledCount++
                 order.add(MOVIES_CLOUD_MAP)
 
-                return listOf(
-                    MovieData(
-                        id = 0,
-                        posterPath = "somePath0",
-                        releaseDate = "1999-01-01",
-                        title = "Star Wars: Episode I - The Phantom Menace"
-                    ),
-                    MovieData(
-                        id = 1,
-                        posterPath = "somePath1",
-                        releaseDate = "2002-01-01",
-                        title = "Star Wars: Episode II - Attack of the Clones"
-                    )
-                )
+                return movies.map { movie ->
+                    movie.map(FakeToMovieMapper.Base(order))
+                }
             }
         }
     }

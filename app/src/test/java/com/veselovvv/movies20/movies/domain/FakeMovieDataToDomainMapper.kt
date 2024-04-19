@@ -17,7 +17,12 @@ interface FakeMovieDataToDomainMapper : MovieDataToDomainMapper {
             assertEquals(count, mapCalledCount)
         }
 
-        override fun map(id: Int, posterPath: String, releaseDate: String, title: String): MovieDomain {
+        override fun map(
+            id: Int,
+            posterPath: String,
+            releaseDate: String,
+            title: String
+        ): MovieDomain {
             mapCalledCount++
             order.add(MOVIE_MAP_DOMAIN)
             return MovieDomain(id, posterPath, releaseDate.substring(0, 4), title)

@@ -17,7 +17,12 @@ interface FakeMovieDomainToUiMapper : MovieDomainToUiMapper {
             assertEquals(count, mapCalledCount)
         }
 
-        override fun map(id: Int, posterPath: String, releaseDate: String, title: String): MovieUi {
+        override fun map(
+            id: Int,
+            posterPath: String,
+            releaseDate: String,
+            title: String
+        ): MovieUi {
             mapCalledCount++
             order.add(MOVIE_MAP_UI)
             return MovieUi.Base(id, posterPath, releaseDate, title)
