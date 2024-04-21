@@ -2,6 +2,8 @@ package com.veselovvv.movies20.movies.data
 
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.data.FakeToMovieMapper.Companion.TO_MOVIE_MAP
+import com.veselovvv.movies20.movies.data.cloud.MovieCloud
+import com.veselovvv.movies20.movies.data.cloud.MoviesCloudMapper
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

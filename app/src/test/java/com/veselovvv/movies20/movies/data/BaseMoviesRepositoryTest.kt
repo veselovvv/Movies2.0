@@ -5,6 +5,9 @@ import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.data.BaseMoviesRepositoryTest.FakeMoviesCloudDataSource.Companion.FETCH_MOVIES
 import com.veselovvv.movies20.movies.data.BaseMoviesRepositoryTest.FakeMoviesCloudMapper.Companion.MOVIES_CLOUD_MAP
 import com.veselovvv.movies20.movies.data.FakeToMovieMapper.Companion.TO_MOVIE_MAP
+import com.veselovvv.movies20.movies.data.cloud.MovieCloud
+import com.veselovvv.movies20.movies.data.cloud.MoviesCloudDataSource
+import com.veselovvv.movies20.movies.data.cloud.MoviesCloudMapper
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
