@@ -1,6 +1,8 @@
 package com.veselovvv.movies20.movies.domain
 
+import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movies.data.MovieData
 import com.veselovvv.movies20.movies.domain.FakeMovieDataToDomainMapper.Companion.MOVIE_MAP_DOMAIN
 import com.veselovvv.movies20.movies.presentation.FakeMovieDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper
@@ -86,8 +88,8 @@ class MoviesDomainTest {
         order.check(listOf(MOVIES_MAP_UI_FAIL))
 
         domain = MoviesDomain.Fail(error = ErrorType.SERVICE_UNAVAILABLE)
-        var expected = MoviesUi.Fail(errorMessage = SERVICE_UNAVAILABLE_MESSAGE)
-        var actual = domain.map(mapper = moviesDomainToUiMapper)
+        expected = MoviesUi.Fail(errorMessage = SERVICE_UNAVAILABLE_MESSAGE)
+        actual = domain.map(mapper = moviesDomainToUiMapper)
         assertEquals(expected, actual)
         movieDomainToUiMapper.checkMapCalledCount(0)
         movieDataToDomainMapper.checkMapCalledCount(0)

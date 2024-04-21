@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movies.domain
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movies.data.MovieDataToDomainMapper
 import org.junit.Assert.assertEquals
 
 interface FakeMovieDataToDomainMapper : MovieDataToDomainMapper {

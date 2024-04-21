@@ -1,6 +1,9 @@
 package com.veselovvv.movies20.movies.domain
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movies.data.MovieData
+import com.veselovvv.movies20.movies.data.MoviesData
+import com.veselovvv.movies20.movies.data.MoviesRepository
 import org.junit.Assert.assertEquals
 
 interface FakeMoviesRepository : MoviesRepository {
@@ -55,7 +58,7 @@ interface FakeMoviesRepository : MoviesRepository {
                     )
                 )
             )
-            else MoviesData.Fail(exception)
+            else MoviesData.Fail(exception as Exception)
         }
 
         override suspend fun searchMovies(query: String): MoviesData {
@@ -72,7 +75,7 @@ interface FakeMoviesRepository : MoviesRepository {
                     )
                 )
             )
-            else MoviesData.Fail(exception)
+            else MoviesData.Fail(exception as Exception)
         }
     }
 }
