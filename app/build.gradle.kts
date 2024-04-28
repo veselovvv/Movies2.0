@@ -66,4 +66,7 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.42")
     kapt("com.google.dagger:hilt-compiler:2.42")
+
+    // Glide
+    implementation("com.github.bumptech.glide:glide:4.11.0")
 }

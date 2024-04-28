@@ -3,4 +3,9 @@
     <string name="service_unavailable_message">Service unavailable. Please try again!</string>
     <string name="no_connection_message">No connection. Please try again!</string>
     <string name="something_went_wrong">Something went wrong. Please try again!</string>
+    <string name="try_again">Try again</string>
+    <string name="no_results_to_show">No results to show</string>
+    <string name="please_check_spelling">Please check spelling or try a different word</string>
+    <string name="movies">Movies</string>
+    <string name="search_movies">Search Movies</string>
 </resources>

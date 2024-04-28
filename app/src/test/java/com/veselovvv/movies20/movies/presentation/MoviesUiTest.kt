@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movies.presentation
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movies.domain.MovieDomain
 import com.veselovvv.movies20.movies.presentation.FakeMovieDomainToUiMapper.Companion.MOVIE_MAP_UI
 import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MOVIES_COMMUNICATION_MAP
 import org.junit.Before
