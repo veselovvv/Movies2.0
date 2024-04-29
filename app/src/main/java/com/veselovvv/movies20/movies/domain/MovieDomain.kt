@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movies.domain
 
 import com.veselovvv.movies20.core.Object
+import com.veselovvv.movies20.movies.presentation.MovieUi
 
 data class MovieDomain(
     private val id: Int,

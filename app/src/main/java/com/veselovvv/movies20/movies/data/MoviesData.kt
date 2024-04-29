@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movies.data
 
 import com.veselovvv.movies20.core.Object
+import com.veselovvv.movies20.movies.domain.MoviesDomain
 
 sealed class MoviesData : Object<MoviesDomain, MoviesDataToDomainMapper> {
     data class Success(private val movies: List<MovieData>) : MoviesData() {

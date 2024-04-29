@@ -8,6 +8,7 @@ import com.veselovvv.movies20.movies.presentation.FakeMovieDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_FAIL
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_SUCCESS
+import com.veselovvv.movies20.movies.presentation.MoviesUi
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
