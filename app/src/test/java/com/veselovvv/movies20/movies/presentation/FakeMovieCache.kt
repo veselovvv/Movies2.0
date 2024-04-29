@@ -36,6 +36,7 @@ interface FakeMovieCache : MovieCache.Mutable {
             return MovieParameters(
                 id = 1,
                 posterPath = "somePath1",
+                releaseDate = "2021-01-09",
                 title = "Star Wars: Episode II - Attack of the Clones"
             )
         }
