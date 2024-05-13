@@ -1,6 +1,5 @@
 package com.veselovvv.movies20.movies.presentation
 
-import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.FakeResourceProvider
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.domain.MovieDomain

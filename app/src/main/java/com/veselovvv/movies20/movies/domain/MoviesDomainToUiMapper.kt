@@ -1,9 +1,9 @@
 package com.veselovvv.movies20.movies.domain
 
-import com.veselovvv.movies20.core.ErrorType
-import com.veselovvv.movies20.movies.presentation.MoviesUi
+import androidx.paging.PagingData
+import com.veselovvv.movies20.movies.presentation.MovieUi
+import kotlinx.coroutines.flow.Flow
 
 interface MoviesDomainToUiMapper {
-    fun map(movies: List<MovieDomain>): MoviesUi
-    fun map(error: ErrorType): MoviesUi
+    fun map(movies: Flow<PagingData<MovieDomain>>): Flow<PagingData<MovieUi>>
 }

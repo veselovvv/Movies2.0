@@ -18,7 +18,6 @@ class CoreDataModule {
         private const val BASE_URL = "https://api.themoviedb.org/3/"
         private const val API_KEY_PARAMETER_NAME = "api_key"
         private const val API_KEY = "a21582c85151cf8986672306c73343b9" // todo replace with "YourApiKey"
-        //todo get full list of items
     }
 
     private val requestInterceptor: Interceptor = Interceptor { chain ->

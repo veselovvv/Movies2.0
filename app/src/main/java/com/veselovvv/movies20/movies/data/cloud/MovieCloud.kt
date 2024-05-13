@@ -9,13 +9,12 @@ data class MovieCloud(
     @SerializedName("id")
     private val id: Int,
     @SerializedName("poster_path")
-    private val posterPath: String,
+    private val posterPath: String?,
     @SerializedName("release_date")
     private val releaseDate: String,
     @SerializedName("title")
     private val title: String
 ) : Object<MovieData, ToMovieMapper> {
-    fun titleStartsWith(query: String) = title.startsWith(query)
-
-    override fun map(mapper: ToMovieMapper) = mapper.map(id, posterPath, releaseDate, title)
+    override fun map(mapper: ToMovieMapper) =
+        mapper.map(id, posterPath ?: "", releaseDate, title)
 }

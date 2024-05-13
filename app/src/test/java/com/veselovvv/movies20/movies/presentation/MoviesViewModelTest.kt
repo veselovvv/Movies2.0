@@ -1,12 +1,10 @@
 package com.veselovvv.movies20.movies.presentation
 
-import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.data.MovieData
 import com.veselovvv.movies20.movies.domain.BaseMovieDataToDomainMapper
 import com.veselovvv.movies20.movies.domain.FetchMoviesUseCase
 import com.veselovvv.movies20.movies.domain.MoviesDomain
-import com.veselovvv.movies20.movies.domain.SearchMoviesUseCase
 import com.veselovvv.movies20.movies.presentation.FakeMovieCache.Base.Companion.SAVE_MOVIE_INFO
 import com.veselovvv.movies20.movies.presentation.FakeMoviesCommunication.Companion.MOVIES_COMMUNICATION_MAP
 import com.veselovvv.movies20.movies.presentation.FakeMoviesDomainToUiMapper.Companion.MOVIES_MAP_UI_FAIL

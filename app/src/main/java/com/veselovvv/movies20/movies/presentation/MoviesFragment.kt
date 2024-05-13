@@ -6,13 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.appcompat.widget.Toolbar
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import com.veselovvv.movies20.R
 import com.veselovvv.movies20.core.presentation.BaseFragment
 import com.veselovvv.movies20.core.presentation.SearchListener
 import com.veselovvv.movies20.databinding.FragmentMoviesBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
@@ -27,19 +30,18 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = MoviesAdapter({
-            viewModel.fetchMovies()
-        }, object : MoviesAdapter.MovieListener {
-            override fun showMovie(
-                id: Int,
-                posterPath: String,
-                releaseDate: String,
-                title: String
-            ) {
-                viewModel.saveMovieInfo(id, posterPath, releaseDate, title)
-                //todo navigate(R.id.movieFragment)
-            }
-        })
+        val adapter = MoviesAdapter(
+            object : MoviesAdapter.MovieListener {
+                override fun showMovie(
+                    id: Int,
+                    posterPath: String,
+                    releaseDate: String,
+                    title: String
+                ) {
+                    viewModel.saveMovieInfo(id, posterPath, releaseDate, title)
+                    //todo navigate(R.id.movieFragment)
+                }
+            })
 
         toolbar = binding.moviesToolbar
         with(toolbar) {
@@ -59,7 +61,9 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
                             })
                         }
                         true
-                    } else -> false
+                    }
+
+                    else -> false
                 }
             }
         }
@@ -72,12 +76,29 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
 
         binding.moviesRecyclerView.apply {
             this.adapter = adapter
-            addItemDecoration(DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL))
         }
 
-        viewModel.observe(this) { movieUiList ->
-            adapter.update(movieUiList)
+        viewModel.observe(viewLifecycleOwner) { movieUiList ->
+            viewLifecycleOwner.lifecycleScope.launch {
+                movieUiList.collect { pagingDataUi ->
+                    adapter.submitData(viewLifecycleOwner.lifecycle, pagingDataUi)
+                }
+            }
         }
+
+        lifecycleScope.launchWhenCreated {
+            adapter.loadStateFlow.collect { loadStates ->
+                val state = loadStates.refresh
+                binding.moviesProgressBar.isVisible = state is LoadState.Loading
+            }
+        }
+
         viewModel.fetchMovies()
+
+        binding.moviesRecyclerView.adapter = adapter.withLoadStateFooter(
+            LoadMoreAdapter {
+                adapter.retry()
+            }
+        )
     }
 }

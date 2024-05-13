@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
 interface MoviesCloudDataSource {
-    suspend fun fetchMovies(): List<MovieCloud>
+    suspend fun fetchMovies(page: Int): MoviesCloud
 
     class Base(
         private val service: MoviesService,
@@ -12,9 +12,7 @@ interface MoviesCloudDataSource {
     ) : MoviesCloudDataSource {
         private val type = object : TypeToken<MoviesCloud>() {}.type
 
-        override suspend fun fetchMovies(): List<MovieCloud> {
-            val moviesCloud: MoviesCloud = gson.fromJson(service.fetchMovies().string(), type)
-            return moviesCloud.getMoviesList()
-        }
+        override suspend fun fetchMovies(page: Int): MoviesCloud =
+            gson.fromJson(service.fetchMovies(page).string(), type)
     }
 }

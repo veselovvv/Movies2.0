@@ -1,7 +1,6 @@
 package com.veselovvv.movies20.movies.di
 
 import android.content.Context
-import com.veselovvv.movies20.core.ResourceProvider
 import com.veselovvv.movies20.movies.data.MovieDataToDomainMapper
 import com.veselovvv.movies20.movies.data.MoviesDataToDomainMapper
 import com.veselovvv.movies20.movies.data.MoviesRepository
@@ -10,7 +9,6 @@ import com.veselovvv.movies20.movies.domain.BaseMoviesDataToDomainMapper
 import com.veselovvv.movies20.movies.domain.FetchMoviesUseCase
 import com.veselovvv.movies20.movies.domain.MovieDomainToUiMapper
 import com.veselovvv.movies20.movies.domain.MoviesDomainToUiMapper
-import com.veselovvv.movies20.movies.domain.SearchMoviesUseCase
 import com.veselovvv.movies20.movies.presentation.BaseMovieDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.BaseMoviesDomainToUiMapper
 import com.veselovvv.movies20.movies.presentation.MovieCache
@@ -42,19 +40,12 @@ class MoviesDomainModule {
     ): FetchMoviesUseCase = FetchMoviesUseCase.Base(repository, mapper)
 
     @Provides
-    fun provideSearchMoviesUseCase(
-        repository: MoviesRepository,
-        mapper: MoviesDataToDomainMapper
-    ): SearchMoviesUseCase = SearchMoviesUseCase.Base(repository, mapper)
-
-    @Provides
     fun provideMovieDomainToUiMapper(): MovieDomainToUiMapper = BaseMovieDomainToUiMapper()
 
     @Provides
     fun provideMoviesDomainToUiMapper(
-        resourceProvider: ResourceProvider,
         movieMapper: MovieDomainToUiMapper
-    ): MoviesDomainToUiMapper = BaseMoviesDomainToUiMapper(resourceProvider, movieMapper)
+    ): MoviesDomainToUiMapper = BaseMoviesDomainToUiMapper(movieMapper)
 
     @Provides
     fun provideMovieCache(

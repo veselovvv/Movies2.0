@@ -1,6 +1,5 @@
 package com.veselovvv.movies20.movies.domain
 
-import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.data.MovieData
 import com.veselovvv.movies20.movies.domain.FakeMoviesDataToDomainMapper.Companion.MOVIES_MAP_DOMAIN_FAIL
