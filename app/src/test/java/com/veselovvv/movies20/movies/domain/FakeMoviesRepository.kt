@@ -1,81 +1,49 @@
 package com.veselovvv.movies20.movies.domain
 
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movies.data.FakeMoviesCloudDataSource
+import com.veselovvv.movies20.movies.data.FakeMoviesCloudMapper
 import com.veselovvv.movies20.movies.data.MovieData
-import com.veselovvv.movies20.movies.data.MoviesData
+import com.veselovvv.movies20.movies.data.MoviesPagingSource
 import com.veselovvv.movies20.movies.data.MoviesRepository
+import kotlinx.coroutines.flow.Flow
 import org.junit.Assert.assertEquals
 
 interface FakeMoviesRepository : MoviesRepository {
     companion object {
         const val REPOSITORY_FETCH_MOVIES = "FakeMoviesRepository#fetchMovies"
-        const val REPOSITORY_SEARCH_MOVIES = "FakeMoviesRepository#searchMovies"
     }
 
-    fun expectSuccess()
-    fun expectFail(exception: Exception)
     fun checkFetchMoviesCalledCount(count: Int)
-    fun checkSearchMoviesCalledCount(count: Int)
 
-    class Base(private val order: Order) : FakeMoviesRepository {
-        private var exception: Exception? = null
+    class Base(
+        private val order: Order,
+        private val cloudDataSource: FakeMoviesCloudDataSource,
+        private val cloudMapper: FakeMoviesCloudMapper
+    ) : FakeMoviesRepository {
         private var fetchMoviesCalledCount = 0
-        private var searchMoviesCalledCount = 0
-
-        override fun expectSuccess() {
-            exception = null
-        }
-
-        override fun expectFail(exception: Exception) {
-            this.exception = exception
-        }
 
         override fun checkFetchMoviesCalledCount(count: Int) {
             assertEquals(count, fetchMoviesCalledCount)
         }
 
-        override fun checkSearchMoviesCalledCount(count: Int) {
-            assertEquals(count, searchMoviesCalledCount)
-        }
-
-        override suspend fun fetchMovies(): MoviesData {
+        override suspend fun fetchMovies(): Flow<PagingData<MovieData>> {
             fetchMoviesCalledCount++
             order.add(REPOSITORY_FETCH_MOVIES)
 
-            return if (exception == null) MoviesData.Success(
-                listOf(
-                    MovieData(
-                        id = 0,
-                        posterPath = "somePath0",
-                        releaseDate = "1999-01-01",
-                        title = "Star Wars: Episode I - The Phantom Menace"
-                    ),
-                    MovieData(
-                        id = 1,
-                        posterPath = "somePath1",
-                        releaseDate = "2002-01-01",
-                        title = "Star Wars: Episode II - Attack of the Clones"
-                    )
-                )
-            )
-            else MoviesData.Fail(exception as Exception)
+            return Pager(
+                config = PagingConfig(pageSize = MAX_PAGE_SIZE, prefetchDistance = 2),
+                pagingSourceFactory = {
+                    MoviesPagingSource(cloudDataSource, cloudMapper)
+                }
+            ).flow
         }
 
-        override suspend fun searchMovies(query: String): MoviesData {
-            searchMoviesCalledCount++
-            order.add(REPOSITORY_SEARCH_MOVIES)
-
-            return if (exception == null) MoviesData.Success(
-                listOf(
-                    MovieData(
-                        id = 1,
-                        posterPath = "somePath1",
-                        releaseDate = "2002-01-01",
-                        title = "Star Wars: Episode II - Attack of the Clones"
-                    )
-                )
-            )
-            else MoviesData.Fail(exception as Exception)
+        companion object {
+            private const val MAX_PAGE_SIZE = 10
         }
     }
 }

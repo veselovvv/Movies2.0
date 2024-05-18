@@ -1,18 +1,21 @@
 package com.veselovvv.movies20.movies.domain
 
+import androidx.paging.map
 import com.veselovvv.movies20.core.Order
-import com.veselovvv.movies20.movies.data.MovieData
-import com.veselovvv.movies20.movies.domain.FakeMoviesDataToDomainMapper.Companion.MOVIES_MAP_DOMAIN_FAIL
-import com.veselovvv.movies20.movies.domain.FakeMoviesDataToDomainMapper.Companion.MOVIES_MAP_DOMAIN_SUCCESS
+import com.veselovvv.movies20.movies.data.FakeMoviesCloudDataSource
+import com.veselovvv.movies20.movies.data.FakeMoviesCloudMapper
+import com.veselovvv.movies20.movies.domain.FakeMoviesDataToDomainMapper.Companion.MOVIES_MAP_DOMAIN
 import com.veselovvv.movies20.movies.domain.FakeMoviesRepository.Companion.REPOSITORY_FETCH_MOVIES
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import java.net.UnknownHostException
 
 class FetchMoviesUseCaseTest {
     private lateinit var order: Order
+    private lateinit var cloudDataSource: FakeMoviesCloudDataSource
+    private lateinit var cloudMapper: FakeMoviesCloudMapper
     private lateinit var repository: FakeMoviesRepository
     private lateinit var movieMapper: FakeMovieDataToDomainMapper
     private lateinit var moviesMapper: FakeMoviesDataToDomainMapper
@@ -21,71 +24,32 @@ class FetchMoviesUseCaseTest {
     @Before
     fun setup() {
         order = Order()
-        repository = FakeMoviesRepository.Base(order)
+        cloudDataSource = FakeMoviesCloudDataSource.Base(order)
+        cloudMapper = FakeMoviesCloudMapper.Base(order)
+        repository = FakeMoviesRepository.Base(order, cloudDataSource, cloudMapper)
         movieMapper = FakeMovieDataToDomainMapper.Base(order)
         moviesMapper = FakeMoviesDataToDomainMapper.Base(order, movieMapper)
         useCase = FetchMoviesUseCase.Base(repository = repository, mapper = moviesMapper)
     }
 
     @Test
-    fun test_success() = runBlocking {
-        repository.expectSuccess()
+    fun test() = runBlocking {
+        val expectedMovieDataList = repository.fetchMovies()
+        val expectedMovieDomainList = moviesMapper.map(expectedMovieDataList)
 
-        val movies = listOf(
-            MovieData(
-                id = 0,
-                posterPath = "somePath0",
-                releaseDate = "1999-01-01",
-                title = "Star Wars: Episode I - The Phantom Menace"
-            ),
-            MovieData(
-                id = 1,
-                posterPath = "somePath1",
-                releaseDate = "2002-01-01",
-                title = "Star Wars: Episode II - Attack of the Clones"
-            )
-        )
+        expectedMovieDomainList.map { expectedPagingData ->
+            expectedPagingData.map { expectedMovieDomain ->
+                useCase.execute().map { actualPagingData ->
+                    actualPagingData.map { actualMovieDomain ->
+                        assertEquals(expectedMovieDomain, actualMovieDomain)
+                    }
+                }
+            }
+        }
 
-        val expected = MoviesDomain.Success(movies = movies, movieMapper = movieMapper)
-        val actual = useCase.execute()
-        assertEquals(expected, actual)
         repository.checkFetchMoviesCalledCount(1)
-        repository.checkSearchMoviesCalledCount(0)
         movieMapper.checkMapCalledCount(0)
-        moviesMapper.checkMapSuccessCalledCount(1)
-        moviesMapper.checkMapFailCalledCount(0)
-        order.check(listOf(REPOSITORY_FETCH_MOVIES, MOVIES_MAP_DOMAIN_SUCCESS))
-    }
-
-    @Test
-    fun test_fail() = runBlocking {
-        repository.expectFail(UnknownHostException())
-
-        var expected = MoviesDomain.Fail(error = ErrorType.NO_CONNECTION)
-        var actual = useCase.execute()
-        assertEquals(expected, actual)
-        repository.checkFetchMoviesCalledCount(1)
-        repository.checkSearchMoviesCalledCount(0)
-        movieMapper.checkMapCalledCount(0)
-        moviesMapper.checkMapSuccessCalledCount(0)
-        moviesMapper.checkMapFailCalledCount(1)
-        order.check(listOf(REPOSITORY_FETCH_MOVIES, MOVIES_MAP_DOMAIN_FAIL))
-
-        repository.expectFail(Exception())
-
-        expected = MoviesDomain.Fail(error = ErrorType.GENERIC_ERROR)
-        actual = useCase.execute()
-        assertEquals(expected, actual)
-        repository.checkFetchMoviesCalledCount(2)
-        repository.checkSearchMoviesCalledCount(0)
-        movieMapper.checkMapCalledCount(0)
-        moviesMapper.checkMapSuccessCalledCount(0)
-        moviesMapper.checkMapFailCalledCount(2)
-        order.check(listOf(
-            REPOSITORY_FETCH_MOVIES,
-            MOVIES_MAP_DOMAIN_FAIL,
-            REPOSITORY_FETCH_MOVIES,
-            MOVIES_MAP_DOMAIN_FAIL
-        ))
+        moviesMapper.checkMapCalledCount(1)
+        order.check(listOf(REPOSITORY_FETCH_MOVIES, MOVIES_MAP_DOMAIN))
     }
 }
