@@ -26,7 +26,7 @@ interface FakeMovieDomainToUiMapper : MovieDomainToUiMapper {
         ): MovieUi {
             mapCalledCount++
             order.add(MOVIE_MAP_UI)
-            return MovieUi.Base(id, posterPath, releaseDate, title)
+            return MovieUi(id, posterPath, releaseDate, title)
         }
     }
 }

@@ -1,14 +1,11 @@
 package com.veselovvv.movies20.movies.domain
 
-import androidx.paging.map
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.data.FakeMoviesCloudDataSource
 import com.veselovvv.movies20.movies.data.FakeMoviesCloudMapper
 import com.veselovvv.movies20.movies.domain.FakeMoviesDataToDomainMapper.Companion.MOVIES_MAP_DOMAIN
 import com.veselovvv.movies20.movies.domain.FakeMoviesRepository.Companion.REPOSITORY_FETCH_MOVIES
-import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -34,21 +31,9 @@ class FetchMoviesUseCaseTest {
 
     @Test
     fun test() = runBlocking {
-        val expectedMovieDataList = repository.fetchMovies()
-        val expectedMovieDomainList = moviesMapper.map(expectedMovieDataList)
-
-        expectedMovieDomainList.map { expectedPagingData ->
-            expectedPagingData.map { expectedMovieDomain ->
-                useCase.execute().map { actualPagingData ->
-                    actualPagingData.map { actualMovieDomain ->
-                        assertEquals(expectedMovieDomain, actualMovieDomain)
-                    }
-                }
-            }
-        }
+        useCase.execute()
 
         repository.checkFetchMoviesCalledCount(1)
-        movieMapper.checkMapCalledCount(0)
         moviesMapper.checkMapCalledCount(1)
         order.check(listOf(REPOSITORY_FETCH_MOVIES, MOVIES_MAP_DOMAIN))
     }

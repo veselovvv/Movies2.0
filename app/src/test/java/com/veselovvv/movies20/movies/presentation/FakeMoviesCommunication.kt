@@ -2,7 +2,11 @@ package com.veselovvv.movies20.movies.presentation
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.veselovvv.movies20.core.Order
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.junit.Assert.assertEquals
 
 interface FakeMoviesCommunication : MoviesCommunication {
@@ -14,7 +18,7 @@ interface FakeMoviesCommunication : MoviesCommunication {
     fun checkMapCalledCount(count: Int)
 
     class Base(private val order: Order) : FakeMoviesCommunication {
-        private var movies = listOf<MovieUi>()
+        private var movies = mutableListOf<MovieUi>()
         private var mapCalledCount = 0
 
         override fun checkList(list: List<MovieUi>) {
@@ -25,12 +29,17 @@ interface FakeMoviesCommunication : MoviesCommunication {
             assertEquals(count, mapCalledCount)
         }
 
-        override fun map(movies: List<MovieUi>) {
-            this.movies = movies
+        override suspend fun map(movies: Flow<PagingData<MovieUi>>) {
+            movies.map { pagingData ->
+                pagingData.map { movieUi ->
+                    this.movies.add(movieUi)
+                }
+            }
+
             mapCalledCount++
             order.add(MOVIES_COMMUNICATION_MAP)
         }
 
-        override fun observe(owner: LifecycleOwner, observer: Observer<List<MovieUi>>) = Unit
+        override fun observe(owner: LifecycleOwner, observer: Observer<Flow<PagingData<MovieUi>>>) = Unit
     }
 }

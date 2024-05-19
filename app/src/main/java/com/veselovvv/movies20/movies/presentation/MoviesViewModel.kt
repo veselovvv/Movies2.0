@@ -31,6 +31,7 @@ class MoviesViewModel @Inject constructor(
         viewModelScope.launch(dispatcher) {
             val moviesDomainList = fetchMoviesUseCase.execute().cachedIn(viewModelScope)
             val moviesUiList = mapper.map(moviesDomainList)
+
             withContext(dispatcherMain) {
                 communication.map(moviesUiList)
             }

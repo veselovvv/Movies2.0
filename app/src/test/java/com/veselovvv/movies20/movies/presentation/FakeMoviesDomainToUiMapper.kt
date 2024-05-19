@@ -1,58 +1,41 @@
 package com.veselovvv.movies20.movies.presentation
 
+import androidx.paging.PagingData
+import androidx.paging.map
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movies.domain.MovieDomain
 import com.veselovvv.movies20.movies.domain.MovieDomainToUiMapper
 import com.veselovvv.movies20.movies.domain.MoviesDomainToUiMapper
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import org.junit.Assert.assertEquals
 
 interface FakeMoviesDomainToUiMapper : MoviesDomainToUiMapper {
     companion object {
-        const val MOVIES_MAP_UI_SUCCESS = "FakeMoviesDomainToUiMapper#mapsuccess"
-        const val MOVIES_MAP_UI_FAIL = "FakeMoviesDomainToUiMapper#mapfail"
+        const val MOVIES_MAP_UI = "FakeMoviesDomainToUiMapper#map"
     }
 
-    fun checkSuccessMapCalledCount(count: Int)
-    fun checkFailMapCalledCount(count: Int)
+    fun checkMapCalledCount(count: Int)
 
     class Base(
         private val order: Order,
         private val movieMapper: MovieDomainToUiMapper
     ) : FakeMoviesDomainToUiMapper {
-        private var successMapCalledCount = 0
-        private var failMapCalledCount = 0
+        private var mapCalledCount = 0
 
-        override fun checkSuccessMapCalledCount(count: Int) {
-            assertEquals(count, successMapCalledCount)
+        override fun checkMapCalledCount(count: Int) {
+            assertEquals(count, mapCalledCount)
         }
 
-        override fun checkFailMapCalledCount(count: Int) {
-            assertEquals(count, failMapCalledCount)
-        }
+        override fun map(movies: Flow<PagingData<MovieDomain>>): Flow<PagingData<MovieUi>> {
+            mapCalledCount++
+            order.add(MOVIES_MAP_UI)
 
-        override fun map(movies: List<MovieDomain>): MoviesUi {
-            successMapCalledCount++
-            order.add(MOVIES_MAP_UI_SUCCESS)
-            return MoviesUi.Success(movies, movieMapper)
-        }
-
-        override fun map(error: ErrorType): MoviesUi {
-            failMapCalledCount++
-            order.add(MOVIES_MAP_UI_FAIL)
-
-            return MoviesUi.Fail(
-                when (error) {
-                    ErrorType.NO_CONNECTION -> NO_CONNECTION_MESSAGE
-                    ErrorType.SERVICE_UNAVAILABLE -> SERVICE_UNAVAILABLE_MESSAGE
-                    else -> SOMETHING_WENT_WRONG
+            return movies.map { pagingData ->
+                pagingData.map { movieDomain ->
+                    movieDomain.map(movieMapper)
                 }
-            )
-        }
-
-        companion object {
-            private const val NO_CONNECTION_MESSAGE = "No connection. Please try again!"
-            private const val SERVICE_UNAVAILABLE_MESSAGE = "Service unavailable. Please try again!"
-            private const val SOMETHING_WENT_WRONG = "Something went wrong. Please try again!"
+            }
         }
     }
 }
