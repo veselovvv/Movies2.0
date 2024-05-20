@@ -2,6 +2,7 @@ package com.veselovvv.movies20.core.presentation
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.veselovvv.movies20.R
 import com.veselovvv.movies20.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -13,6 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        setTheme(R.style.Theme_Movies20)
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
