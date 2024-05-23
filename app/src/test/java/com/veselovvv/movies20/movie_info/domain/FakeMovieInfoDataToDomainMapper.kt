@@ -1,16 +1,16 @@
-package com.veselovvv.movies20.movie_info.data
+package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.Order
 import junit.framework.Assert.assertEquals
 
-interface FakeToMovieInfoMapper : ToMovieInfoMapper {
+interface FakeMovieInfoDataToDomainMapper : MovieInfoDataToDomainMapper {
     companion object {
-        const val TO_MOVIE_INFO_MAP = "FakeToMovieInfoMapper#map"
+        const val MOVIE_INFO_MAP_DOMAIN = "FakeMovieInfoDataToDomainMapper#map"
     }
 
     fun checkMapCalledCount(count: Int)
 
-    class Base(private val order: Order) : FakeToMovieInfoMapper {
+    class Base(private val order: Order) : FakeMovieInfoDataToDomainMapper {
         private var mapCalledCount = 0
 
         override fun checkMapCalledCount(count: Int) {
@@ -26,11 +26,11 @@ interface FakeToMovieInfoMapper : ToMovieInfoMapper {
             runtime: Int,
             title: String,
             rating: Double
-        ): MovieInfoData {
+        ): MovieInfoDomain {
             mapCalledCount++
-            order.add(TO_MOVIE_INFO_MAP)
+            order.add(MOVIE_INFO_MAP_DOMAIN)
 
-            return MovieInfoData(
+            return MovieInfoDomain(
                 budget = 100000,
                 overview = "Some overview here",
                 posterPath = "somePath",

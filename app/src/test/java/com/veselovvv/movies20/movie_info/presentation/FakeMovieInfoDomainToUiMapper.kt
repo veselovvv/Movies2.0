@@ -1,16 +1,16 @@
-package com.veselovvv.movies20.movie_info.data
+package com.veselovvv.movies20.movie_info.presentation
 
 import com.veselovvv.movies20.core.Order
 import junit.framework.Assert.assertEquals
 
-interface FakeToMovieInfoMapper : ToMovieInfoMapper {
+interface FakeMovieInfoDomainToUiMapper : MovieInfoDomainToUiMapper {
     companion object {
-        const val TO_MOVIE_INFO_MAP = "FakeToMovieInfoMapper#map"
+        const val MOVIE_INFO_MAP_UI = "FakeMovieInfoDomainToUiMapper#map"
     }
 
     fun checkMapCalledCount(count: Int)
 
-    class Base(private val order: Order) : FakeToMovieInfoMapper {
+    class Base(private val order: Order) : FakeMovieInfoDomainToUiMapper {
         private var mapCalledCount = 0
 
         override fun checkMapCalledCount(count: Int) {
@@ -26,19 +26,19 @@ interface FakeToMovieInfoMapper : ToMovieInfoMapper {
             runtime: Int,
             title: String,
             rating: Double
-        ): MovieInfoData {
+        ): MovieInfoUi {
             mapCalledCount++
-            order.add(TO_MOVIE_INFO_MAP)
+            order.add(MOVIE_INFO_MAP_UI)
 
-            return MovieInfoData(
-                budget = 100000,
+            return MovieInfoUi(
+                budget = "$100.000",
                 overview = "Some overview here",
                 posterPath = "somePath",
-                releaseDate = "2002-01-01",
-                revenue = 10000L,
-                runtime = 90,
+                releaseDate = "01.01.2002",
+                revenue = "$10.000",
+                runtime = "90",
                 title = "Star Wars: Episode II - Attack of the Clones",
-                rating = 4.9
+                rating = "4.9"
             )
         }
     }
