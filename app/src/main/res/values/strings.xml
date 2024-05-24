@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Movies2.0</string>
+    <string name="service_unavailable_message">Service unavailable. Please try again!</string>
+    <string name="no_connection_message">No connection. Please try again!</string>
     <string name="something_went_wrong">Something went wrong. Please try again!</string>
     <string name="please_check_spelling">Please check spelling or try a different word</string>
     <string name="movies">Movies</string>

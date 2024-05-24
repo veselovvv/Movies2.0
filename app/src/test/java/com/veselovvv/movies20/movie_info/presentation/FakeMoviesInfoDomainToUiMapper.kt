@@ -2,6 +2,9 @@ package com.veselovvv.movies20.movie_info.presentation
 
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.GENERIC_ERROR_MESSAGE
+import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.NO_CONNECTION_MESSAGE
+import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
 import junit.framework.Assert.assertEquals
 
 interface FakeMoviesInfoDomainToUiMapper : MoviesInfoDomainToUiMapper {
@@ -55,12 +58,6 @@ interface FakeMoviesInfoDomainToUiMapper : MoviesInfoDomainToUiMapper {
                     else -> GENERIC_ERROR_MESSAGE
                 }
             )
-        }
-
-        companion object {
-            const val NO_CONNECTION_MESSAGE = "No connection. Please try again!"
-            const val SERVICE_UNAVAILABLE_MESSAGE = "Service unavailable. Please try again!"
-            const val GENERIC_ERROR_MESSAGE = "Something went wrong. Please try again!"
         }
     }
 }

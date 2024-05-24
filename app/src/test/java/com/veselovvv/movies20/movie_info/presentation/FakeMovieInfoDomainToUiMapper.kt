@@ -30,7 +30,7 @@ interface FakeMovieInfoDomainToUiMapper : MovieInfoDomainToUiMapper {
             mapCalledCount++
             order.add(MOVIE_INFO_MAP_UI)
 
-            return MovieInfoUi(
+            return MovieInfoUi.Base(
                 budget = "$100.000",
                 overview = "Some overview here",
                 posterPath = "somePath",
