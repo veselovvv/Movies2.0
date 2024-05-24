@@ -2,6 +2,8 @@ package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.data.MovieInfoData
+import com.veselovvv.movies20.movie_info.data.MoviesInfoDataToDomainMapper
 import junit.framework.Assert.assertEquals
 import retrofit2.HttpException
 import java.net.UnknownHostException

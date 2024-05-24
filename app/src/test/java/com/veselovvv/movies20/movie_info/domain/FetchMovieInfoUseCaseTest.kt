@@ -2,6 +2,7 @@ package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.data.MovieInfoData
 import com.veselovvv.movies20.movie_info.domain.FakeMovieInfoRepository.Companion.REPOSITORY_FETCH_MOVIE_INFO
 import com.veselovvv.movies20.movie_info.domain.FakeMoviesInfoDataToDomainMapper.Companion.MOVIES_INFO_MAP_DOMAIN_FAIL
 import com.veselovvv.movies20.movie_info.domain.FakeMoviesInfoDataToDomainMapper.Companion.MOVIES_INFO_MAP_DOMAIN_SUCCESS

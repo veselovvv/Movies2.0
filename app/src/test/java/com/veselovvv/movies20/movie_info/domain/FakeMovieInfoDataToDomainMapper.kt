@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.data.MovieInfoDataToDomainMapper
 import junit.framework.Assert.assertEquals
 
 interface FakeMovieInfoDataToDomainMapper : MovieInfoDataToDomainMapper {

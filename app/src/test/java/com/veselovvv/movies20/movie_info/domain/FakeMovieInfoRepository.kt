@@ -1,6 +1,9 @@
 package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.data.MovieInfoData
+import com.veselovvv.movies20.movie_info.data.MovieInfoRepository
+import com.veselovvv.movies20.movie_info.data.MoviesInfoData
 import junit.framework.Assert.assertEquals
 
 interface FakeMovieInfoRepository : MovieInfoRepository {
@@ -43,7 +46,7 @@ interface FakeMovieInfoRepository : MovieInfoRepository {
                     title = "Star Wars: Episode II - Attack of the Clones",
                     rating = 4.9
                 )
-            ) else MoviesInfoData.Fail(exception = exception)
+            ) else MoviesInfoData.Fail(exception = exception as Exception)
         }
     }
 }

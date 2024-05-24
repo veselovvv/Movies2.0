@@ -2,6 +2,8 @@ package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.data.MovieInfoData
+import com.veselovvv.movies20.movie_info.data.MoviesInfoDataToDomainMapper
 import com.veselovvv.movies20.movie_info.domain.FakeMovieInfoDataToDomainMapper.Companion.MOVIE_INFO_MAP_DOMAIN
 import junit.framework.Assert.assertEquals
 import org.junit.Before
@@ -37,7 +39,7 @@ class BaseMoviesInfoDataToDomainMapperTest {
             movieInfo = movieInfo,
             movieInfoMapper = movieInfoMapper
         )
-        val actual = mapper.map(movieInfo)
+        val actual = mapper.map(movieInfo = movieInfo)
 
         assertEquals(expected, actual)
         movieInfoMapper.checkMapCalledCount(1)
@@ -47,14 +49,14 @@ class BaseMoviesInfoDataToDomainMapperTest {
     @Test
     fun test_fail() {
         var expected = MoviesInfoDomain.Fail(errorType = ErrorType.NO_CONNECTION)
-        var actual = mapper.map(UnknownHostException())
+        var actual = mapper.map(exception = UnknownHostException())
 
         assertEquals(expected, actual)
         movieInfoMapper.checkMapCalledCount(0)
         order.check(listOf())
 
         expected = MoviesInfoDomain.Fail(errorType = ErrorType.GENERIC_ERROR)
-        actual = mapper.map(Exception())
+        actual = mapper.map(exception = Exception())
 
         assertEquals(expected, actual)
         movieInfoMapper.checkMapCalledCount(0)

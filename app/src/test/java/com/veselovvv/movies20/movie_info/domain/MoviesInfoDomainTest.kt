@@ -2,12 +2,13 @@ package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.data.MovieInfoData
 import com.veselovvv.movies20.movie_info.domain.FakeMovieInfoDataToDomainMapper.Companion.MOVIE_INFO_MAP_DOMAIN
+import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.NO_CONNECTION_MESSAGE
+import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.FakeMovieInfoDomainToUiMapper
 import com.veselovvv.movies20.movie_info.presentation.FakeMovieInfoDomainToUiMapper.Companion.MOVIE_INFO_MAP_UI
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper
-import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Base.Companion.NO_CONNECTION_MESSAGE
-import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Companion.MOVIES_INFO_MAP_UI_FAIL
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Companion.MOVIES_INFO_MAP_UI_SUCCESS
 import junit.framework.Assert.assertEquals

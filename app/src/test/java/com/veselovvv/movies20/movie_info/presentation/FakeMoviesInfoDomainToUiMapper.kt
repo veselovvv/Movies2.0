@@ -2,6 +2,8 @@ package com.veselovvv.movies20.movie_info.presentation
 
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.domain.MovieInfoDomain
+import com.veselovvv.movies20.movie_info.domain.MoviesInfoDomainToUiMapper
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.GENERIC_ERROR_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.NO_CONNECTION_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
@@ -16,7 +18,10 @@ interface FakeMoviesInfoDomainToUiMapper : MoviesInfoDomainToUiMapper {
     fun checkMapSuccessCalledCount(count: Int)
     fun checkMapFailCalledCount(count: Int)
 
-    class Base(private val order: Order) : FakeMoviesInfoDomainToUiMapper {
+    class Base(
+        private val order: Order,
+        private val movieInfoDomainToUiMapper: FakeMovieInfoDomainToUiMapper
+    ) : FakeMoviesInfoDomainToUiMapper {
         private var mapSuccessCalledCount = 0
         private var mapFailCalledCount = 0
 
@@ -43,7 +48,7 @@ interface FakeMoviesInfoDomainToUiMapper : MoviesInfoDomainToUiMapper {
                     title = "Star Wars: Episode II - Attack of the Clones",
                     rating = 4.9
                 ),
-                movieInfoMapper = BaseMovieInfoDomainToUiMapper()
+                movieInfoMapper = movieInfoDomainToUiMapper
             )
         }
 
