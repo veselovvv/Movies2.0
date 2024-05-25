@@ -4,6 +4,9 @@ import com.veselovvv.movies20.core.FakeException
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movie_info.data.BaseMovieInfoRepositoryTest.FakeMovieInfoCloudDataSource.Companion.FETCH_MOVIE_INFO
 import com.veselovvv.movies20.movie_info.data.BaseMovieInfoRepositoryTest.FakeMovieInfoCloudMapper.Companion.MOVIE_INFO_CLOUD_MAP
+import com.veselovvv.movies20.movie_info.data.cloud.MovieInfoCloud
+import com.veselovvv.movies20.movie_info.data.cloud.MovieInfoCloudDataSource
+import com.veselovvv.movies20.movie_info.data.cloud.MovieInfoCloudMapper
 import junit.framework.Assert.assertEquals
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -99,7 +102,7 @@ class BaseMovieInfoRepositoryTest {
                     runtime = 90,
                     title = "Star Wars: Episode II - Attack of the Clones",
                     rating = 4.9
-                ) else FakeException("Something went wrong")
+                ) else throw FakeException("Something went wrong")
             }
         }
     }
