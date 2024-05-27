@@ -1,5 +1,7 @@
 package com.veselovvv.movies20.movie_info.domain
 
+import com.veselovvv.movies20.movie_info.presentation.MovieInfoUi
+
 interface MovieInfoDomainToUiMapper {
     fun map(
         budget: Int,
@@ -11,4 +13,7 @@ interface MovieInfoDomainToUiMapper {
         title: String,
         rating: Double
     ): MovieInfoUi
+
+    fun formatPrice(value: String): String
+    fun formatDate(value: String): String
 }

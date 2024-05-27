@@ -4,6 +4,7 @@ import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Object
 import com.veselovvv.movies20.movie_info.data.MovieInfoData
 import com.veselovvv.movies20.movie_info.data.MovieInfoDataToDomainMapper
+import com.veselovvv.movies20.movie_info.presentation.MoviesInfoUi
 
 sealed class MoviesInfoDomain : Object<MoviesInfoUi, MoviesInfoDomainToUiMapper> {
     data class Success(

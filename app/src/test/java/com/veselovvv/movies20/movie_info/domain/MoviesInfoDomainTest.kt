@@ -11,6 +11,7 @@ import com.veselovvv.movies20.movie_info.presentation.FakeMovieInfoDomainToUiMap
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Companion.MOVIES_INFO_MAP_UI_FAIL
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Companion.MOVIES_INFO_MAP_UI_SUCCESS
+import com.veselovvv.movies20.movie_info.presentation.MoviesInfoUi
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test

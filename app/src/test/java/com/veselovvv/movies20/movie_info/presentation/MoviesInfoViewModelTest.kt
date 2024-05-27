@@ -2,6 +2,10 @@ package com.veselovvv.movies20.movie_info.presentation
 
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.data.MovieInfoData
+import com.veselovvv.movies20.movie_info.domain.BaseMovieInfoDataToDomainMapper
+import com.veselovvv.movies20.movie_info.domain.FetchMovieInfoUseCase
+import com.veselovvv.movies20.movie_info.domain.MoviesInfoDomain
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.GENERIC_ERROR_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.NO_CONNECTION_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
@@ -21,6 +25,7 @@ class MoviesInfoViewModelTest {
     private lateinit var order: Order
     private lateinit var fetchMovieInfoUseCase: FakeFetchMovieInfoUseCase
     private lateinit var communication: FakeMoviesInfoCommunication
+    private lateinit var movieInfoDomainToUiMapper: FakeMovieInfoDomainToUiMapper
     private lateinit var mapper: FakeMoviesInfoDomainToUiMapper
     private lateinit var movieCache: FakeMovieCache
     private lateinit var viewModel: MoviesInfoViewModel
@@ -30,7 +35,8 @@ class MoviesInfoViewModelTest {
         order = Order()
         fetchMovieInfoUseCase = FakeFetchMovieInfoUseCase.Base(order)
         communication = FakeMoviesInfoCommunication.Base(order)
-        mapper = FakeMoviesInfoDomainToUiMapper.Base(order)
+        movieInfoDomainToUiMapper = FakeMovieInfoDomainToUiMapper.Base(order)
+        mapper = FakeMoviesInfoDomainToUiMapper.Base(order, movieInfoDomainToUiMapper)
         movieCache = FakeMovieCache.Base(order)
         viewModel = MoviesInfoViewModel(
             fetchMovieInfoUseCase = fetchMovieInfoUseCase,
@@ -238,7 +244,7 @@ class MoviesInfoViewModelTest {
                         rating = 4.9
                     ),
                     movieInfoMapper = BaseMovieInfoDataToDomainMapper()
-                ) else MoviesInfoDomain.Fail(errorType = error)
+                ) else MoviesInfoDomain.Fail(errorType = error as ErrorType)
             }
         }
     }

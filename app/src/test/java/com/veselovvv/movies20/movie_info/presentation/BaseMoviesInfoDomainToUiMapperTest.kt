@@ -4,6 +4,8 @@ import com.veselovvv.movies20.R
 import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.core.ResourceProvider
+import com.veselovvv.movies20.movie_info.domain.MovieInfoDomain
+import com.veselovvv.movies20.movie_info.domain.MoviesInfoDomainToUiMapper
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.NO_CONNECTION_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Companion.RESOURCE_PROVIDER_GET_STRING

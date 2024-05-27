@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movie_info.domain
 
 import com.veselovvv.movies20.core.Object
+import com.veselovvv.movies20.movie_info.presentation.MovieInfoUi
 
 data class MovieInfoDomain(
     private val budget: Int,

@@ -1,6 +1,7 @@
 package com.veselovvv.movies20.movie_info.presentation
 
 import com.veselovvv.movies20.core.Order
+import com.veselovvv.movies20.movie_info.domain.MovieInfoDomain
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.GENERIC_ERROR_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.NO_CONNECTION_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
