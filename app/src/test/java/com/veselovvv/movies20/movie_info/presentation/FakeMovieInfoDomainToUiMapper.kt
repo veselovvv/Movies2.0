@@ -42,5 +42,8 @@ interface FakeMovieInfoDomainToUiMapper : MovieInfoDomainToUiMapper {
                 rating = "4.9"
             )
         }
+
+        override fun formatPrice(value: String) = "$100.000"
+        override fun formatDate(value: String) = "01.01.2002"
     }
 }
