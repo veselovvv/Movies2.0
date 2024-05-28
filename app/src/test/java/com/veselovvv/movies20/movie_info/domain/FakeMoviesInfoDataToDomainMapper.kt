@@ -17,7 +17,10 @@ interface FakeMoviesInfoDataToDomainMapper : MoviesInfoDataToDomainMapper {
     fun checkMapSuccessCalledCount(count: Int)
     fun checkMapFailCalledCount(count: Int)
 
-    class Base(private val order: Order) : FakeMoviesInfoDataToDomainMapper {
+    class Base(
+        private val order: Order,
+        private val movieInfoMapper: FakeMovieInfoDataToDomainMapper
+    ) : FakeMoviesInfoDataToDomainMapper {
         private var mapSuccessCalledCount = 0
         private var mapFailCalledCount = 0
 
@@ -44,7 +47,7 @@ interface FakeMoviesInfoDataToDomainMapper : MoviesInfoDataToDomainMapper {
                     title = "Star Wars: Episode II - Attack of the Clones",
                     rating = 4.9
                 ),
-                movieInfoMapper = BaseMovieInfoDataToDomainMapper()
+                movieInfoMapper = movieInfoMapper
             )
         }
 

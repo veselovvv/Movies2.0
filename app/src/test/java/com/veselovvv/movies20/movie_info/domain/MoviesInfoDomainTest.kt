@@ -7,7 +7,6 @@ import com.veselovvv.movies20.movie_info.domain.FakeMovieInfoDataToDomainMapper.
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.NO_CONNECTION_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.BaseMoviesInfoDomainToUiMapperTest.FakeResourceProvider.Base.Companion.SERVICE_UNAVAILABLE_MESSAGE
 import com.veselovvv.movies20.movie_info.presentation.FakeMovieInfoDomainToUiMapper
-import com.veselovvv.movies20.movie_info.presentation.FakeMovieInfoDomainToUiMapper.Companion.MOVIE_INFO_MAP_UI
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Companion.MOVIES_INFO_MAP_UI_FAIL
 import com.veselovvv.movies20.movie_info.presentation.FakeMoviesInfoDomainToUiMapper.Companion.MOVIES_INFO_MAP_UI_SUCCESS
@@ -67,10 +66,10 @@ class MoviesInfoDomainTest {
         assertEquals(expected, actual)
 
         movieInfoDataToDomainMapper.checkMapCalledCount(1)
-        movieInfoDomainToUiMapper.checkMapCalledCount(1)
+        movieInfoDomainToUiMapper.checkMapCalledCount(0)
         moviesInfoDomainToUiMapper.checkMapSuccessCalledCount(1)
         moviesInfoDomainToUiMapper.checkMapFailCalledCount(0)
-        order.check(listOf(MOVIE_INFO_MAP_DOMAIN, MOVIE_INFO_MAP_UI, MOVIES_INFO_MAP_UI_SUCCESS))
+        order.check(listOf(MOVIE_INFO_MAP_DOMAIN, MOVIES_INFO_MAP_UI_SUCCESS))
     }
 
     @Test

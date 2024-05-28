@@ -15,19 +15,19 @@ import java.net.UnknownHostException
 class FetchMovieInfoUseCaseTest {
     private lateinit var order: Order
     private lateinit var repository: FakeMovieInfoRepository
-    private lateinit var mapper: FakeMoviesInfoDataToDomainMapper
     private lateinit var movieInfoMapper: FakeMovieInfoDataToDomainMapper
+    private lateinit var moviesInfoMapper: FakeMoviesInfoDataToDomainMapper
     private lateinit var useCase: FetchMovieInfoUseCase
 
     @Before
     fun setup() {
         order = Order()
         repository = FakeMovieInfoRepository.Base(order)
-        mapper = FakeMoviesInfoDataToDomainMapper.Base(order)
         movieInfoMapper = FakeMovieInfoDataToDomainMapper.Base(order)
+        moviesInfoMapper = FakeMoviesInfoDataToDomainMapper.Base(order, movieInfoMapper)
         useCase = FetchMovieInfoUseCase.Base(
             repository = repository,
-            mapper = mapper
+            mapper = moviesInfoMapper
         )
     }
 
@@ -54,9 +54,8 @@ class FetchMovieInfoUseCaseTest {
         assertEquals(expected, actual)
 
         repository.checkCalledCount(1)
-        mapper.checkMapSuccessCalledCount(1)
-        mapper.checkMapFailCalledCount(0)
-        movieInfoMapper.checkMapCalledCount(0)
+        moviesInfoMapper.checkMapSuccessCalledCount(1)
+        moviesInfoMapper.checkMapFailCalledCount(0)
         order.check(listOf(REPOSITORY_FETCH_MOVIE_INFO, MOVIES_INFO_MAP_DOMAIN_SUCCESS))
     }
 
@@ -69,9 +68,8 @@ class FetchMovieInfoUseCaseTest {
         assertEquals(expected, actual)
 
         repository.checkCalledCount(1)
-        mapper.checkMapSuccessCalledCount(0)
-        mapper.checkMapFailCalledCount(1)
-        movieInfoMapper.checkMapCalledCount(0)
+        moviesInfoMapper.checkMapSuccessCalledCount(0)
+        moviesInfoMapper.checkMapFailCalledCount(1)
         order.check(listOf(REPOSITORY_FETCH_MOVIE_INFO, MOVIES_INFO_MAP_DOMAIN_FAIL))
 
         repository.expectFail(Exception())
@@ -80,14 +78,14 @@ class FetchMovieInfoUseCaseTest {
         actual = useCase.execute(id = 1)
         assertEquals(expected, actual)
 
-        repository.checkCalledCount(1)
-        mapper.checkMapSuccessCalledCount(0)
-        mapper.checkMapFailCalledCount(2)
-        movieInfoMapper.checkMapCalledCount(0)
+        repository.checkCalledCount(2)
+        moviesInfoMapper.checkMapSuccessCalledCount(0)
+        moviesInfoMapper.checkMapFailCalledCount(2)
         order.check(
             listOf(
                 REPOSITORY_FETCH_MOVIE_INFO,
                 MOVIES_INFO_MAP_DOMAIN_FAIL,
+                REPOSITORY_FETCH_MOVIE_INFO,
                 MOVIES_INFO_MAP_DOMAIN_FAIL
             )
         )

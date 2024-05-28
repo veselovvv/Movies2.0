@@ -4,7 +4,6 @@ import com.veselovvv.movies20.core.ErrorType
 import com.veselovvv.movies20.core.Order
 import com.veselovvv.movies20.movie_info.data.MovieInfoData
 import com.veselovvv.movies20.movie_info.data.MoviesInfoDataToDomainMapper
-import com.veselovvv.movies20.movie_info.domain.FakeMovieInfoDataToDomainMapper.Companion.MOVIE_INFO_MAP_DOMAIN
 import junit.framework.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -42,8 +41,8 @@ class BaseMoviesInfoDataToDomainMapperTest {
         val actual = mapper.map(movieInfo = movieInfo)
 
         assertEquals(expected, actual)
-        movieInfoMapper.checkMapCalledCount(1)
-        order.check(listOf(MOVIE_INFO_MAP_DOMAIN))
+        movieInfoMapper.checkMapCalledCount(0)
+        order.check(listOf())
     }
 
     @Test
