@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/moviesFragment">
+
+    <fragment
+        android:id="@+id/moviesFragment"
+        android:name="com.veselovvv.movies20.movies.presentation.MoviesFragment"
+        android:label="MoviesFragment" />
+    <fragment
+        android:id="@+id/movieInfoFragment"
+        android:name="com.veselovvv.movies20.movie_info.presentation.MovieInfoFragment"
+        android:label="MovieInfoFragment" />
+</navigation>
