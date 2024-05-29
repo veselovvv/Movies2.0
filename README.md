@@ -15,5 +15,6 @@ When the data is loading, a progress indicator is displayed. In addition, there 
 ![7](https://github.com/veselovvv/Movies2.0/assets/76612421/2575e289-b3ff-4f66-92d4-ae1003bec706)
 ![8](https://github.com/veselovvv/Movies2.0/assets/76612421/63733e94-10cf-48a7-93c8-33795efd26ca)
 ![9](https://github.com/veselovvv/Movies2.0/assets/76612421/c779e83e-1c1f-4797-967e-7e4bd4c381c8)
+
 #Getting Started
 The first thing you need to do is to get key (https://developers.themoviedb.org/3/getting-started/introduction). After that you need to input your key in const API_KEY in core/di/CoreDataModule.kt. Now you can launch the app.
