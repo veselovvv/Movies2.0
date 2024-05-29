@@ -39,7 +39,7 @@ class MoviesFragment : BaseFragment<FragmentMoviesBinding>() {
                     title: String
                 ) {
                     viewModel.saveMovieInfo(id, posterPath, releaseDate, title)
-                    //todo navigate(R.id.movieFragment)
+                    navigate(R.id.movieInfoFragment)
                 }
             })
 

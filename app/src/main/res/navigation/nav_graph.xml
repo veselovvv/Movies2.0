@@ -8,4 +8,8 @@
         android:id="@+id/moviesFragment"
         android:name="com.veselovvv.movies20.movies.presentation.MoviesFragment"
         android:label="MoviesFragment" />
+    <fragment
+        android:id="@+id/movieInfoFragment"
+        android:name="com.veselovvv.movies20.movie_info.presentation.MovieInfoFragment"
+        android:label="MovieInfoFragment" />
 </navigation>

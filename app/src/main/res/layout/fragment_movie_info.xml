@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical">
+
+    <include layout="@layout/progress_fullscreen"
+        android:id="@+id/movie_info_progress_layout"
+        android:visibility="gone" />
+
+    <include layout="@layout/fail_fullscreen"
+        android:id="@+id/movie_info_fail_layout"
+        android:visibility="gone" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/movie_info_swipe_to_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView style="@style/scroll_view">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/movie_info_title"
+                    android:padding="16dp"
+                    android:gravity="center"
+                    tools:text="Star Wars: Episode II - Attack of the Clones"
+                    style="@style/big_text_view" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/movie_info_release_date"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="24sp"
+                    tools:text="01.01.2002" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/divider" />
+
+                <ImageView
+                    android:id="@+id/movie_info_poster"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/divider" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/small_text_view"
+                        android:text="@string/rating"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/movie_info_rating"
+                        style="@style/small_text_view"
+                        android:textStyle="bold"
+                        android:layout_weight="0.5"
+                        android:gravity="end"
+                        tools:text="4.3" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/small_text_view"
+                        android:text="@string/runtime"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/movie_info_runtime"
+                        style="@style/small_text_view"
+                        android:textStyle="bold"
+                        android:layout_weight="0.5"
+                        android:gravity="end"
+                        tools:text="90" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/small_text_view"
+                        android:text="@string/budget"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/movie_info_budget"
+                        style="@style/small_text_view"
+                        android:textStyle="bold"
+                        android:layout_weight="0.5"
+                        android:gravity="end"
+                        tools:text="$100.000" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="8dp"
+                    android:orientation="horizontal">
+
+                    <com.google.android.material.textview.MaterialTextView
+                        style="@style/small_text_view"
+                        android:text="@string/revenue"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.textview.MaterialTextView
+                        android:id="@+id/movie_info_revenue"
+                        style="@style/small_text_view"
+                        android:textStyle="bold"
+                        android:layout_weight="0.5"
+                        android:gravity="end"
+                        tools:text="$110.000" />
+                </LinearLayout>
+
+                <com.google.android.material.divider.MaterialDivider
+                    style="@style/divider" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:padding="16dp"
+                    android:gravity="center"
+                    android:text="@string/overview"
+                    style="@style/big_text_view" />
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/movie_info_overview"
+                    style="@style/TextAppearance.AppCompat.Body1"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="16dp"
+                    android:textSize="24sp"
+                    tools:text="Some long overview of the movie here that may not fit one row" />
+            </LinearLayout>
+        </ScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</LinearLayout>
