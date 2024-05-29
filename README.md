@@ -1,6 +1,7 @@
 🎥 Android App using Kotlin, MVVM, Clean Architecture, Coroutines, LiveData, Flow, Retrofit, Gson, Glide, Paging library, Hilt, Navigation Component, ViewBinding and Material Design. This app is the remake of https://github.com/veselovvv/Movies with Clean Architecture, Coroutines, search and better UI.
 This Android app displays a list of popular movies retrieved from this API - https://www.themoviedb.org, as well as detailed information about each movie. There is also a search for movies.
 When the data is loading, a progress indicator is displayed. In addition, there is a fail screen. It will be displayed if there is no connection, the service is not available, or another error has occurred.
+
 ![1](https://github.com/veselovvv/Movies2.0/assets/76612421/cefa6aa2-53bc-498f-a3b2-fe814f5f19cd)
 ![2](https://github.com/veselovvv/Movies2.0/assets/76612421/fa056b45-300d-4881-95be-d43e4b2bc2cb)
 ![3](https://github.com/veselovvv/Movies2.0/assets/76612421/6794ba21-f4b9-4c04-b4f6-ea13cb38587d)
