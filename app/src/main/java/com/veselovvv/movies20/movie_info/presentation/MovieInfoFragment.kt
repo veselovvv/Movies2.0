@@ -47,5 +47,6 @@ class MovieInfoFragment : BaseFragment<FragmentMovieInfoBinding>() {
                 viewModel.fetchMovieInfo(viewModel.getMovieId())
             }
         }
+        viewModel.fetchMovieInfo(viewModel.getMovieId())
     }
 }
