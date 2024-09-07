@@ -4,7 +4,9 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.ViewInteraction
+import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
+import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
@@ -21,6 +23,10 @@ class RecyclerViewUi(swipeToRefreshId: Int, recyclerViewId: Int) {
             isAssignableFrom(RecyclerView::class.java)
         )
     )
+
+    fun clickOnItemInList(index: Int) {
+        interaction.perform(actionOnItemAtPosition<RecyclerView.ViewHolder>(index, click()))
+    }
 
     fun checkMoviesListState(movies: List<Pair<String, String>>) {
         movies.forEachIndexed { index, (title, year) ->
