@@ -1,5 +1,6 @@
 package com.veselovvv.movies20
 
+import androidx.test.espresso.Espresso.pressBack
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.veselovvv.movies20.core.presentation.MainActivity
@@ -113,5 +114,104 @@ class MoviesTest {
                 Pair("Kill Bill: Vol. 1", "2003")
             )
         )
+    }
+
+    /**
+     * Check Movies Page is visible
+     * Check movies list state
+     * 1. Click on first item in list (index = 0)
+     * Check Movie Info Page is visible
+     * Check movie info state
+     * 2. Recreate activity
+     * Check error state with text "No connection. Please try again!"
+     * 3. Click "Retry" button
+     * Check Movie Info Page is visible
+     * Check movie info state
+     * 4. Scroll up
+     * 5. Swipe to refresh
+     * Check error state with text "No connection. Please try again!"
+     * 6. Click "Retry" button
+     * Check Movie Info Page is visible
+     * Check movie info state
+     * 7. Press back button
+     * Check Movie Info Page is not visible
+     * Check Movies Page is visible
+     * Check movies list state
+     */
+    @Test
+    fun loadMovieInfoAndGoBack() {
+        val moviesPage = MoviesPage()
+
+        with(moviesPage) {
+            checkIsVisible()
+            checkMoviesListState(
+                movies = listOf(
+                    Pair("Back to the Future", "1985"),
+                    Pair("Eight Crazy Nights", "2002"),
+                    Pair("Kill Bill: Vol. 1", "2003")
+                )
+            )
+            clickOnItemInList(index = 0)
+        }
+
+        val movieInfoPage = MovieInfoPage()
+
+        with(movieInfoPage) {
+            checkIsVisible()
+            checkMovieInfoState(
+                title = "Back to the Future",
+                date = "03.07.1985",
+                rating = "8.318",
+                runtime = "116",
+                budget = "$19.000.000",
+                revenue = "$381.109.762",
+                overview = "Eighties teenager Marty McFly is accidentally sent back in time to 1955..."
+            )
+
+            activityScenarioRule.scenario.recreate()
+            checkErrorState(message = "No connection. Please try again!")
+
+            clickRetryButton()
+            checkIsVisible()
+            checkMovieInfoState(
+                title = "Back to the Future",
+                date = "03.07.1985",
+                rating = "8.318",
+                runtime = "116",
+                budget = "$19.000.000",
+                revenue = "$381.109.762",
+                overview = "Eighties teenager Marty McFly is accidentally sent back in time to 1955..."
+            )
+
+            scrollUp()
+            swipeToRefresh()
+            checkErrorState(message = "No connection. Please try again!")
+
+            clickRetryButton()
+            checkIsVisible()
+            checkMovieInfoState(
+                title = "Back to the Future",
+                date = "03.07.1985",
+                rating = "8.318",
+                runtime = "116",
+                budget = "$19.000.000",
+                revenue = "$381.109.762",
+                overview = "Eighties teenager Marty McFly is accidentally sent back in time to 1955..."
+            )
+        }
+
+        pressBack()
+        movieInfoPage.checkIsNotVisible()
+
+        with(moviesPage) {
+            checkIsVisible()
+            checkMoviesListState(
+                movies = listOf(
+                    Pair("Back to the Future", "1985"),
+                    Pair("Eight Crazy Nights", "2002"),
+                    Pair("Kill Bill: Vol. 1", "2003")
+                )
+            )
+        }
     }
 }
