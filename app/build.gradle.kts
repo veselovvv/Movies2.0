@@ -16,7 +16,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.veselovvv.movies20.HiltTestRunner"
     }
 
     buildTypes {
@@ -48,6 +48,7 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    implementation("androidx.test.espresso:espresso-contrib:3.5.1")
 
     // Coroutines
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1")
@@ -66,6 +67,8 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.42")
     kapt("com.google.dagger:hilt-compiler:2.42")
+    debugImplementation("com.google.dagger:hilt-android-testing:2.42")
+    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.42")
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.11.0")
