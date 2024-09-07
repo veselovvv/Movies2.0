@@ -59,4 +59,59 @@ class MoviesTest {
             )
         )
     }
+
+    /**
+     * Check movies list state
+     * 1. Click search button
+     * Check search view state
+     * 2. CLick back search button
+     * Check movies list state
+     * 3. Click search button
+     * Check search view state
+     * 4. Type "Eight" in search view
+     * Check movies list state with found movie
+     * 5. CLick back search button
+     * Check movies list state
+     */
+    @Test
+    fun searchMovies() = with(MoviesPage()) {
+        checkMoviesListState(
+            movies = listOf(
+                Pair("Back to the Future", "1985"),
+                Pair("Eight Crazy Nights", "2002"),
+                Pair("Kill Bill: Vol. 1", "2003")
+            )
+        )
+
+        clickSearchButton()
+        checkSearchViewState()
+
+        clickBackSearchButton()
+        checkMoviesListState(
+            movies = listOf(
+                Pair("Back to the Future", "1985"),
+                Pair("Eight Crazy Nights", "2002"),
+                Pair("Kill Bill: Vol. 1", "2003")
+            )
+        )
+
+        clickSearchButton()
+        checkSearchViewState()
+
+        typeInSearchView(text = "Eight")
+        checkMoviesListState(
+            movies = listOf(
+                Pair("Eight Crazy Nights", "2002")
+            )
+        )
+
+        clickBackSearchButton()
+        checkMoviesListState(
+            movies = listOf(
+                Pair("Back to the Future", "1985"),
+                Pair("Eight Crazy Nights", "2002"),
+                Pair("Kill Bill: Vol. 1", "2003")
+            )
+        )
+    }
 }
