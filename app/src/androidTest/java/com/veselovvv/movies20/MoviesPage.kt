@@ -16,6 +16,7 @@ class MoviesPage : AbstractPage(R.id.movies_root_layout) {
         recyclerViewUi.checkMoviesListState(movies = movies)
 
     fun swipeToRefresh() = swipeToRefreshUi.swipeToRefresh()
+    fun clickOnItemInList(index: Int) = recyclerViewUi.clickOnItemInList(index)
     fun clickSearchButton() = searchViewUi.clickSearchButton(searchMenuItemId = R.id.action_search_movies)
     fun checkSearchViewState() = searchViewUi.checkSearchViewState()
     fun clickBackSearchButton() = searchViewUi.clickBackSearchButton()
